@@ -74,3 +74,8 @@ A lexical analyzer for Python with syntax highlighting and error reporting.
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+> [!NOTE] For general notes
+> [!TIP] For helpful suggestions
+> [!IMPORTANT] For critical information
+> [!CAUTION] For potential risks
