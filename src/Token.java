@@ -44,5 +44,5 @@ public class Token {
         return String.format("Token{type='%s', value='%s', line=%d, column=%d, color=%s}", 
             type, value, line, column, color);
     }
-}
+
 }

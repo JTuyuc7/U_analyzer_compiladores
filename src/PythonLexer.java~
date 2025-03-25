@@ -3,6 +3,7 @@
 // source: src/PythonLexer.flex
 
 import java_cup.runtime.*;
+import java.awt.Color;
 
 
 @SuppressWarnings("fallthrough")
@@ -98,8 +99,8 @@ class PythonLexer {
   private static final String ZZ_ACTION_PACKED_0 =
     "\1\0\1\1\2\2\2\1\1\3\1\4\1\5\1\4"+
     "\1\5\1\4\2\6\24\7\1\4\1\0\1\10\2\3"+
-    "\1\11\2\0\2\1\4\7\1\12\10\7\1\12\12\7"+
-    "\1\10\3\0\1\13\24\7\1\0\1\13\1\14\11\7"+
+    "\1\11\2\0\2\12\4\7\1\13\10\7\1\13\12\7"+
+    "\1\10\3\0\1\14\24\7\1\0\1\14\1\15\11\7"+
     "\1\0\10\7";
 
   private static int [] zzUnpackAction() {
@@ -397,9 +398,19 @@ class PythonLexer {
   private boolean zzEOFDone;
 
   /* user code: */
-    private Token token(String type, String value) {
-        return new Token(type, value, yyline + 1, yycolumn + 1);
+    private Token token(String type, String value, Color color) {
+        return new Token(type, value, yyline + 1, yycolumn + 1, color);
     }
+
+    private static final Color KEYWORD_COLOR = new Color(147, 199, 99);    // Green
+    private static final Color OPERATOR_COLOR = new Color(103, 140, 177);  // Blue
+    private static final Color STRING_COLOR = new Color(214, 157, 133);    // Orange
+    private static final Color COMMENT_COLOR = new Color(128, 128, 128);   // Gray
+    private static final Color NUMBER_COLOR = new Color(104, 151, 187);    // Light Blue
+    private static final Color DELIMITER_COLOR = new Color(103, 140, 177); // Blue
+    private static final Color BOOLEAN_COLOR = new Color(147, 199, 99);    // Green
+    private static final Color ERROR_COLOR = new Color(229, 84, 81);       // Red
+    private static final Color DEFAULT_COLOR = new Color(204, 204, 204);   // Light Gray
 
 
   /**
@@ -813,65 +824,70 @@ class PythonLexer {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { return token("ERROR", yytext());
+            { return token("ERROR", "Invalid character: " + yytext(), ERROR_COLOR);
             }
           // fall through
-          case 13: break;
+          case 14: break;
           case 2:
             { /* ignore */
             }
           // fall through
-          case 14: break;
-          case 3:
-            { return token("COMMENT", yytext());
-            }
-          // fall through
           case 15: break;
-          case 4:
-            { return token("OPERATOR", yytext());
+          case 3:
+            { return token("COMMENT", yytext(), COMMENT_COLOR);
             }
           // fall through
           case 16: break;
-          case 5:
-            { return token("DELIMITER", yytext());
+          case 4:
+            { return token("OPERATOR", yytext(), OPERATOR_COLOR);
             }
           // fall through
           case 17: break;
-          case 6:
-            { return token("INTEGER", yytext());
+          case 5:
+            { return token("DELIMITER", yytext(), DELIMITER_COLOR);
             }
           // fall through
           case 18: break;
-          case 7:
-            { return token("IDENTIFIER", yytext());
+          case 6:
+            { return token("INTEGER", yytext(), NUMBER_COLOR);
             }
           // fall through
           case 19: break;
-          case 8:
-            { return token("STRING", yytext());
+          case 7:
+            { return token("IDENTIFIER", yytext(), DEFAULT_COLOR);
             }
           // fall through
           case 20: break;
-          case 9:
-            { return token("FLOAT", yytext());
+          case 8:
+            { return token("STRING", yytext(), STRING_COLOR);
             }
           // fall through
           case 21: break;
-          case 10:
-            { return token("KEYWORD", yytext());
+          case 9:
+            { return token("FLOAT", yytext(), NUMBER_COLOR);
             }
           // fall through
           case 22: break;
-          case 11:
-            { return token("SCIENTIFIC", yytext());
+          case 10:
+            { return token("ERROR", "Invalid identifier: " + yytext(), ERROR_COLOR);
             }
           // fall through
           case 23: break;
-          case 12:
-            { return token("BOOLEAN", yytext());
+          case 11:
+            { return token("KEYWORD", yytext(), KEYWORD_COLOR);
             }
           // fall through
           case 24: break;
+          case 12:
+            { return token("SCIENTIFIC", yytext(), NUMBER_COLOR);
+            }
+          // fall through
+          case 25: break;
+          case 13:
+            { return token("BOOLEAN", yytext(), BOOLEAN_COLOR);
+            }
+          // fall through
+          case 26: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

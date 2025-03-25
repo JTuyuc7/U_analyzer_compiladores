@@ -10,6 +10,7 @@ public class Main {
     private static JTextArea inputArea;
     private static JTextPane outputPane;
     private static JTextArea errorArea;
+    private static JTextArea tokenArea;
     private static List<Token> tokens = new ArrayList<>();
     
     public static void main(String[] args) {
@@ -22,7 +23,7 @@ public class Main {
             
             JFrame frame = new JFrame("Python Analyzer v1");
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1000, 800);
+            frame.setSize(1200, 800);
             frame.setLocationRelativeTo(null);
             
             // Create main panel
@@ -43,15 +44,18 @@ public class Main {
             topPanel.add(inputScrollPane, BorderLayout.CENTER);
             topPanel.add(analyzeButton, BorderLayout.EAST);
             
-            // Create bottom split pane for output and errors
+            // Create bottom split pane for output and analysis
             JSplitPane bottomSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
             
             // Output text pane for highlighted code
             outputPane = new JTextPane();
             outputPane.setEditable(false);
             outputPane.setFont(new Font("Monospaced", Font.PLAIN, 14));
-            outputPane.setBackground(new Color(30, 30, 30)); // Dark background
+            outputPane.setBackground(new Color(94, 86, 86)); // Dark background
             JScrollPane outputScrollPane = new JScrollPane(outputPane);
+            
+            // Create a split pane for errors and tokens
+            JSplitPane analysisSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
             
             // Error text area
             errorArea = new JTextArea();
@@ -60,15 +64,26 @@ public class Main {
             errorArea.setForeground(Color.RED);
             JScrollPane errorScrollPane = new JScrollPane(errorArea);
             
+            // Token text area
+            tokenArea = new JTextArea();
+            tokenArea.setEditable(false);
+            tokenArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
+            tokenArea.setForeground(Color.darkGray);
+            JScrollPane tokenScrollPane = new JScrollPane(tokenArea);
+            
+            analysisSplitPane.setLeftComponent(errorScrollPane);
+            analysisSplitPane.setRightComponent(tokenScrollPane);
+            analysisSplitPane.setDividerLocation(300);
+            
             bottomSplitPane.setTopComponent(outputScrollPane);
-            bottomSplitPane.setBottomComponent(errorScrollPane);
-            bottomSplitPane.setDividerLocation(350);
+            bottomSplitPane.setBottomComponent(analysisSplitPane);
+            bottomSplitPane.setDividerLocation(250);
             
             // Add components to main split pane
             JSplitPane mainSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
             mainSplitPane.setTopComponent(topPanel);
             mainSplitPane.setBottomComponent(bottomSplitPane);
-            mainSplitPane.setDividerLocation(300);
+            mainSplitPane.setDividerLocation(200);
             
             mainPanel.add(mainSplitPane, BorderLayout.CENTER);
             frame.add(mainPanel);
@@ -80,6 +95,7 @@ public class Main {
         String input = inputArea.getText();
         tokens.clear();
         errorArea.setText("");
+        tokenArea.setText("");
         
         try {
             // Create a new lexer
@@ -97,13 +113,15 @@ public class Main {
             
             // Process all tokens
             StringBuilder errors = new StringBuilder();
+            StringBuilder tokenInfo = new StringBuilder();
             while ((token = lexer.yylex()) != null) {
                 tokens.add(token);
                 
                 // Handle errors
                 if (token.isError()) {
-                    errors.append(String.format("Error at line %d, column %d: %s%n",
-                            token.getLine(), token.getColumn(), token.getValue()));
+                    errors.append(String.format("ERROR: %s%n", token.getValue()));
+                } else {
+                    tokenInfo.append(formatTokenInfo(token));
                 }
                 
                 // Apply highlighting
@@ -113,9 +131,16 @@ public class Main {
             // Update UI
             outputPane.setStyledDocument(doc);
             errorArea.setText(errors.toString());
+            tokenArea.setText(tokenInfo.toString());
             
         } catch (IOException e) {
             errorArea.setText("Error analyzing code: " + e.getMessage());
         }
+    }
+    
+    private static String formatTokenInfo(Token token) {
+        String tokenType = token.getType().toString();
+        String tokenValue = token.getValue();
+        return String.format("%s: '%s'%n", tokenType, tokenValue);
     }
 }

@@ -1,4 +1,5 @@
 import java_cup.runtime.*;
+import java.awt.Color;
 
 %%
 
@@ -29,21 +30,21 @@ LineTerminator = \r|\n|\r\n
 WhiteSpace = {LineTerminator} | [ \t\f]
 Comment = "#" [^\r\n]* {LineTerminator}?
 
-// Identifiers and invalid identifiers
+// Identifiers
 ValidIdentifier = [a-zA-Z_][a-zA-Z0-9_]*
-InvalidIdentifier = [0-9]+{ValidIdentifier} | {ValidIdentifier}"def" | "defe" | {ValidIdentifier}[0-9]+{ValidIdentifier}
-InvalidKeyword = "defe"
 
 // Numbers
 Integer = 0 | [1-9][0-9]*
 Float = {Integer}\.[0-9]+ | \.[0-9]+
 Scientific = ({Integer}|{Float})[eE][-+]?[0-9]+
 
-// Strings
-StringCharacter = [^\r\n\"\\]
-String = \"({StringCharacter})*\"
-MultiLineString = \"\"\"[^\"]*\"\"\"
+StringCharacter = [^\"\\\n\r]
+EscapedChar = \\.
+String = \"({StringCharacter}|{EscapedChar})*\"
+MultiLineString = \"\"\"([^\"\\]|\\.|\"|\"\")*\"\"\"
 
+
+// ===================== Rules =====================
 %%
 
 // Keywords
@@ -117,22 +118,23 @@ MultiLineString = \"\"\"[^\"]*\"\"\"
 ";"             { return token("DELIMITER", yytext(), DELIMITER_COLOR); }
 
 // Literals
-{Integer}       { return token("INTEGER", yytext(), NUMBER_COLOR); }
-{Float}         { return token("FLOAT", yytext(), NUMBER_COLOR); }
-{Scientific}    { return token("SCIENTIFIC", yytext(), NUMBER_COLOR); }
-{String}        { return token("STRING", yytext(), STRING_COLOR); }
-{MultiLineString} { return token("STRING", yytext(), STRING_COLOR); }
+{Integer}           { return token("INTEGER", yytext(), NUMBER_COLOR); }
+{Float}             { return token("FLOAT", yytext(), NUMBER_COLOR); }
+{Scientific}        { return token("SCIENTIFIC", yytext(), NUMBER_COLOR); }
+{String}            { return token("STRING", yytext(), STRING_COLOR); }
+{MultiLineString}   { return token("STRING", yytext(), STRING_COLOR); }
 
 // Identifiers
-{ValidIdentifier}    { return token("IDENTIFIER", yytext(), DEFAULT_COLOR); }
-{InvalidIdentifier}  { return token("ERROR", "Invalid identifier: " + yytext(), ERROR_COLOR); }
-{InvalidKeyword}     { return token("ERROR", "Did you mean 'def'?", ERROR_COLOR); }
+{ValidIdentifier}   { return token("IDENTIFIER", yytext(), DEFAULT_COLOR); }
+
+// Invalid identifiers (ej. 2var)
+[0-9]+[a-zA-Z_]+     { return token("ERROR", "Invalid identifier: " + yytext(), ERROR_COLOR); }
 
 // Comments
-{Comment}       { return token("COMMENT", yytext(), COMMENT_COLOR); }
+{Comment}           { return token("COMMENT", yytext(), COMMENT_COLOR); }
 
 // Whitespace
-{WhiteSpace}    { /* ignore */ }
+{WhiteSpace}        { /* Ignorar espacios y saltos de línea */ }
 
-// Error fallback
-[^]             { return token("ERROR", "Invalid character: " + yytext(), ERROR_COLOR); }
+// Catch-all for unknown symbols
+[^]                 { return token("ERROR", "Invalid character: " + yytext(), ERROR_COLOR); }
