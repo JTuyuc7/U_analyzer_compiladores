@@ -102,21 +102,8 @@ public class Main {
                 
                 // Handle errors
                 if (token.isError()) {
-                    String errorMsg;
-                    String value = token.getValue();
-                    
-                    if (value.matches("[0-9]+.*")) {
-                        errorMsg = "Identifier cannot start with a number";
-                    } else if (value.equals("defe")) {
-                        errorMsg = "Did you mean 'def'?";
-                    } else if (value.contains("def")) {
-                        errorMsg = "Invalid function definition";
-                    } else {
-                        errorMsg = "Invalid token";
-                    }
-                    
-                    errors.append(String.format("Error at line %d, column %d: %s - '%s'%n",
-                            token.getLine(), token.getColumn(), errorMsg, token.getValue()));
+                    errors.append(String.format("Error at line %d, column %d: %s%n",
+                            token.getLine(), token.getColumn(), token.getValue()));
                 }
                 
                 // Apply highlighting
