@@ -1,4 +1,5 @@
 import java_cup.runtime.*;
+import java.awt.Color;
 
 %%
 
@@ -9,9 +10,19 @@ import java_cup.runtime.*;
 %type Token
 
 %{
-    private Token token(String type, String value) {
-        return new Token(type, value, yyline + 1, yycolumn + 1);
+    private Token token(String type, String value, Color color) {
+        return new Token(type, value, yyline + 1, yycolumn + 1, color);
     }
+
+    private static final Color KEYWORD_COLOR = new Color(147, 199, 99);    // Green
+    private static final Color OPERATOR_COLOR = new Color(103, 140, 177);  // Blue
+    private static final Color STRING_COLOR = new Color(214, 157, 133);    // Orange
+    private static final Color COMMENT_COLOR = new Color(128, 128, 128);   // Gray
+    private static final Color NUMBER_COLOR = new Color(104, 151, 187);    // Light Blue
+    private static final Color DELIMITER_COLOR = new Color(103, 140, 177); // Blue
+    private static final Color BOOLEAN_COLOR = new Color(147, 199, 99);    // Green
+    private static final Color ERROR_COLOR = new Color(229, 84, 81);       // Red
+    private static final Color DEFAULT_COLOR = new Color(204, 204, 204);   // Light Gray
 %}
 
 // Whitespace and comments
@@ -19,108 +30,111 @@ LineTerminator = \r|\n|\r\n
 WhiteSpace = {LineTerminator} | [ \t\f]
 Comment = "#" [^\r\n]* {LineTerminator}?
 
-// Identifiers and invalid identifiers
+// Identifiers
 ValidIdentifier = [a-zA-Z_][a-zA-Z0-9_]*
-InvalidIdentifier = [0-9]+{ValidIdentifier} | {ValidIdentifier}"def" | "defe" | {ValidIdentifier}[0-9]+{ValidIdentifier}
 
 // Numbers
 Integer = 0 | [1-9][0-9]*
 Float = {Integer}\.[0-9]+ | \.[0-9]+
 Scientific = ({Integer}|{Float})[eE][-+]?[0-9]+
 
-// Strings
-StringCharacter = [^\r\n\"\\]
-String = \"({StringCharacter})*\"
-MultiLineString = \"\"\"[^\"]*\"\"\"
+StringCharacter = [^\"\\\n\r]
+EscapedChar = \\.
+String = \"({StringCharacter}|{EscapedChar})*\"
+MultiLineString = \"\"\"([^\"\\]|\\.|\"|\"\")*\"\"\"
 
+
+// ===================== Rules =====================
 %%
 
 // Keywords
-"and"           { return token("KEYWORD", yytext()); }
-"as"            { return token("KEYWORD", yytext()); }
-"assert"        { return token("KEYWORD", yytext()); }
-"break"         { return token("KEYWORD", yytext()); }
-"class"         { return token("KEYWORD", yytext()); }
-"continue"      { return token("KEYWORD", yytext()); }
-"def"           { return token("KEYWORD", yytext()); }
-"del"           { return token("KEYWORD", yytext()); }
-"elif"          { return token("KEYWORD", yytext()); }
-"else"          { return token("KEYWORD", yytext()); }
-"except"        { return token("KEYWORD", yytext()); }
-"False"         { return token("BOOLEAN", yytext()); }
-"finally"       { return token("KEYWORD", yytext()); }
-"for"           { return token("KEYWORD", yytext()); }
-"from"          { return token("KEYWORD", yytext()); }
-"global"        { return token("KEYWORD", yytext()); }
-"if"            { return token("KEYWORD", yytext()); }
-"import"        { return token("KEYWORD", yytext()); }
-"in"            { return token("KEYWORD", yytext()); }
-"is"            { return token("KEYWORD", yytext()); }
-"lambda"        { return token("KEYWORD", yytext()); }
-"None"          { return token("KEYWORD", yytext()); }
-"nonlocal"      { return token("KEYWORD", yytext()); }
-"not"           { return token("KEYWORD", yytext()); }
-"or"            { return token("KEYWORD", yytext()); }
-"pass"          { return token("KEYWORD", yytext()); }
-"raise"         { return token("KEYWORD", yytext()); }
-"return"        { return token("KEYWORD", yytext()); }
-"True"          { return token("BOOLEAN", yytext()); }
-"try"           { return token("KEYWORD", yytext()); }
-"while"         { return token("KEYWORD", yytext()); }
-"with"          { return token("KEYWORD", yytext()); }
-"yield"         { return token("KEYWORD", yytext()); }
+"and"           { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"as"            { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"assert"        { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"break"         { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"class"         { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"continue"      { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"def"           { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"del"           { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"elif"          { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"else"          { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"except"        { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"False"         { return token("BOOLEAN", yytext(), BOOLEAN_COLOR); }
+"finally"       { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"for"           { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"from"          { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"global"        { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"if"            { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"import"        { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"in"            { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"is"            { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"lambda"        { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"None"          { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"nonlocal"      { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"not"           { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"or"            { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"pass"          { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"raise"         { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"return"        { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"True"          { return token("BOOLEAN", yytext(), BOOLEAN_COLOR); }
+"try"           { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"while"         { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"with"          { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
+"yield"         { return token("KEYWORD", yytext(), KEYWORD_COLOR); }
 
 // Operators
-"+"             { return token("OPERATOR", yytext()); }
-"-"             { return token("OPERATOR", yytext()); }
-"*"             { return token("OPERATOR", yytext()); }
-"/"             { return token("OPERATOR", yytext()); }
-"//"            { return token("OPERATOR", yytext()); }
-"%"             { return token("OPERATOR", yytext()); }
-"**"            { return token("OPERATOR", yytext()); }
-"="             { return token("OPERATOR", yytext()); }
-"+="            { return token("OPERATOR", yytext()); }
-"-="            { return token("OPERATOR", yytext()); }
-"*="            { return token("OPERATOR", yytext()); }
-"/="            { return token("OPERATOR", yytext()); }
-"//="           { return token("OPERATOR", yytext()); }
-"%="            { return token("OPERATOR", yytext()); }
-"**="           { return token("OPERATOR", yytext()); }
-"=="            { return token("OPERATOR", yytext()); }
-"!="            { return token("OPERATOR", yytext()); }
-"<"             { return token("OPERATOR", yytext()); }
-">"             { return token("OPERATOR", yytext()); }
-"<="            { return token("OPERATOR", yytext()); }
-">="            { return token("OPERATOR", yytext()); }
+"+"             { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"-"             { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"*"             { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"/"             { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"//"            { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"%"             { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"**"            { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"="             { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"+="            { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"-="            { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"*="            { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"/="            { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"//="           { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"%="            { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"**="           { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"=="            { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"!="            { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"<"             { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+">"             { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+"<="            { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
+">="            { return token("OPERATOR", yytext(), OPERATOR_COLOR); }
 
 // Delimiters
-"("             { return token("DELIMITER", yytext()); }
-")"             { return token("DELIMITER", yytext()); }
-"["             { return token("DELIMITER", yytext()); }
-"]"             { return token("DELIMITER", yytext()); }
-"{"             { return token("DELIMITER", yytext()); }
-"}"             { return token("DELIMITER", yytext()); }
-","             { return token("DELIMITER", yytext()); }
-":"             { return token("DELIMITER", yytext()); }
-"."             { return token("DELIMITER", yytext()); }
-";"             { return token("DELIMITER", yytext()); }
+"("             { return token("DELIMITER", yytext(), DELIMITER_COLOR); }
+")"             { return token("DELIMITER", yytext(), DELIMITER_COLOR); }
+"["             { return token("DELIMITER", yytext(), DELIMITER_COLOR); }
+"]"             { return token("DELIMITER", yytext(), DELIMITER_COLOR); }
+"{"             { return token("DELIMITER", yytext(), DELIMITER_COLOR); }
+"}"             { return token("DELIMITER", yytext(), DELIMITER_COLOR); }
+","             { return token("DELIMITER", yytext(), DELIMITER_COLOR); }
+":"             { return token("DELIMITER", yytext(), DELIMITER_COLOR); }
+"."             { return token("DELIMITER", yytext(), DELIMITER_COLOR); }
+";"             { return token("DELIMITER", yytext(), DELIMITER_COLOR); }
 
 // Literals
-{Integer}       { return token("INTEGER", yytext()); }
-{Float}         { return token("FLOAT", yytext()); }
-{Scientific}    { return token("SCIENTIFIC", yytext()); }
-{String}        { return token("STRING", yytext()); }
-{MultiLineString} { return token("STRING", yytext()); }
+{Integer}           { return token("INTEGER", yytext(), NUMBER_COLOR); }
+{Float}             { return token("FLOAT", yytext(), NUMBER_COLOR); }
+{Scientific}        { return token("SCIENTIFIC", yytext(), NUMBER_COLOR); }
+{String}            { return token("STRING", yytext(), STRING_COLOR); }
+{MultiLineString}   { return token("STRING", yytext(), STRING_COLOR); }
 
 // Identifiers
-{ValidIdentifier}    { return token("IDENTIFIER", yytext()); }
-{InvalidIdentifier}  { return token("ERROR", yytext()); }
+{ValidIdentifier}   { return token("IDENTIFIER", yytext(), DEFAULT_COLOR); }
+
+// Invalid identifiers (ej. 2var)
+[0-9]+[a-zA-Z_]+     { return token("ERROR", "Invalid identifier: " + yytext(), ERROR_COLOR); }
 
 // Comments
-{Comment}       { return token("COMMENT", yytext()); }
+{Comment}           { return token("COMMENT", yytext(), COMMENT_COLOR); }
 
 // Whitespace
-{WhiteSpace}    { /* ignore */ }
+{WhiteSpace}        { /* Ignorar espacios y saltos de línea */ }
 
-// Error fallback
-[^]             { return token("ERROR", yytext()); }
+// Catch-all for unknown symbols
+[^]                 { return token("ERROR", "Invalid character: " + yytext(), ERROR_COLOR); }
