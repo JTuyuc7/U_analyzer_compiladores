@@ -11,19 +11,19 @@ import java.awt.Color;
 
 %{
     private Token token(String type, String value, Color color) {
-        return new Token(type, value, yyline + 1, yycolumn + 1, color);
-    }
+                return new Token(type, value, yyline + 1, yycolumn + 1, color);
+            }
 
-    private static final Color KEYWORD_COLOR = new Color(147, 199, 99);    // Green
-    private static final Color OPERATOR_COLOR = new Color(103, 140, 177);  // Blue
-    private static final Color STRING_COLOR = new Color(214, 157, 133);    // Orange
-    private static final Color COMMENT_COLOR = new Color(128, 128, 128);   // Gray
-    private static final Color NUMBER_COLOR = new Color(104, 151, 187);    // Light Blue
-    private static final Color DELIMITER_COLOR = new Color(103, 140, 177); // Blue
-    private static final Color BOOLEAN_COLOR = new Color(147, 199, 99);    // Green
-    private static final Color ERROR_COLOR = new Color(229, 84, 81);       // Red
-    private static final Color DEFAULT_COLOR = new Color(204, 204, 204);   // Light Gray
-%}
+            private static final Color KEYWORD_COLOR = new Color(147, 199, 99);    // Green
+            private static final Color OPERATOR_COLOR = new Color(103, 140, 177);  // Blue
+            private static final Color STRING_COLOR = new Color(214, 157, 133);    // Orange
+            private static final Color COMMENT_COLOR = new Color(128, 128, 128);   // Gray
+            private static final Color NUMBER_COLOR = new Color(122, 30, 183);    // Light Blue
+            private static final Color DELIMITER_COLOR = new Color(103, 140, 177); // Blue
+            private static final Color BOOLEAN_COLOR = new Color(147, 199, 99);    // Green
+            private static final Color ERROR_COLOR = new Color(229, 84, 81);       // Red
+            private static final Color DEFAULT_COLOR = new Color(204, 204, 204);   // Light Gray
+        %}
 
 // Whitespace and comments
 LineTerminator = \r|\n|\r\n
