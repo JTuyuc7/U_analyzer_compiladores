@@ -4,10 +4,13 @@
 
 import java_cup.runtime.*;
 import java.awt.Color;
+import java.util.Stack;
+import java.util.LinkedList;
+import java.util.Queue;
 
 
 @SuppressWarnings("fallthrough")
-class PythonLexer {
+class PythonLexer implements java_cup.runtime.Scanner {
 
   /** This character denotes the end of file. */
   public static final int YYEOF = -1;
@@ -17,6 +20,7 @@ class PythonLexer {
 
   // Lexical states.
   public static final int YYINITIAL = 0;
+  public static final int INDENT_CHECK = 2;
 
   /**
    * ZZ_LEXSTATE[l] is the state in the DFA for the lexical state l
@@ -25,7 +29,7 @@ class PythonLexer {
    * l is of the form l = 2*k, k a non negative integer
    */
   private static final int ZZ_LEXSTATE[] = {
-     0, 0
+     0,  0,  1, 1
   };
 
   /**
@@ -63,15 +67,15 @@ class PythonLexer {
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
     "\11\0\1\1\1\2\1\3\1\4\1\5\22\0\1\1"+
-    "\1\6\1\7\1\10\1\0\1\11\2\0\2\12\1\13"+
-    "\1\14\1\12\1\14\1\15\1\16\1\17\11\20\2\12"+
-    "\1\11\1\21\1\11\2\0\4\22\1\23\1\24\7\22"+
-    "\1\25\5\22\1\26\6\22\1\12\1\27\1\12\1\0"+
-    "\1\22\1\0\1\30\1\31\1\32\1\33\1\34\1\35"+
-    "\1\36\1\37\1\40\1\22\1\41\1\42\1\43\1\44"+
-    "\1\45\1\46\1\22\1\47\1\50\1\51\1\52\1\22"+
-    "\1\53\1\54\1\55\1\22\1\12\1\0\1\12\7\0"+
-    "\1\3\u01a2\0\2\3\326\0\u0100\3";
+    "\1\6\1\7\1\10\1\0\1\11\2\0\1\12\1\13"+
+    "\1\14\1\15\1\16\1\17\1\20\1\21\1\22\11\23"+
+    "\1\24\1\25\1\26\1\27\1\30\2\0\4\31\1\32"+
+    "\1\33\7\31\1\34\5\31\1\35\6\31\1\36\1\37"+
+    "\1\40\1\0\1\31\1\0\1\41\1\42\1\43\1\44"+
+    "\1\45\1\46\1\47\1\50\1\51\1\31\1\52\1\53"+
+    "\1\54\1\55\1\56\1\57\1\31\1\60\1\61\1\62"+
+    "\1\63\1\31\1\64\1\65\1\66\1\31\1\67\1\0"+
+    "\1\70\7\0\1\3\u01a2\0\2\3\326\0\u0100\3";
 
   private static int [] zzUnpackcmap_blocks() {
     int [] result = new int[1024];
@@ -98,14 +102,19 @@ class PythonLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\2\2\2\1\1\3\1\4\1\5\1\4"+
-    "\1\5\1\4\2\6\24\7\1\4\1\0\1\10\1\0"+
-    "\2\3\1\11\2\0\2\12\4\7\1\13\10\7\1\13"+
-    "\12\7\1\10\3\0\1\14\24\7\2\0\1\15\11\7"+
-    "\1\0\7\7\1\10\1\7";
+    "\1\1\1\0\1\2\1\1\1\3\1\4\1\3\2\2"+
+    "\1\5\1\6\1\7\1\10\1\11\1\12\1\13\1\14"+
+    "\1\15\1\16\2\17\1\20\1\21\1\22\1\23\1\24"+
+    "\4\25\1\26\1\27\20\25\1\30\1\31\1\32\1\0"+
+    "\1\33\1\0\2\5\1\34\1\35\1\36\1\34\2\0"+
+    "\2\37\1\40\1\41\1\42\4\25\1\43\12\25\1\44"+
+    "\1\25\1\45\1\43\2\25\1\46\7\25\1\33\3\0"+
+    "\1\47\3\25\1\50\4\25\1\51\4\25\1\52\5\25"+
+    "\1\53\6\25\2\0\1\54\4\25\1\55\1\56\10\25"+
+    "\1\0\1\25\1\57\6\25\1\60\1\33\1\25\1\61";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[116];
+    int [] result = new int[157];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -130,24 +139,29 @@ class PythonLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\56\0\56\0\134\0\212\0\270\0\346\0\212"+
-    "\0\56\0\u0114\0\u0142\0\u0170\0\u019e\0\u01cc\0\u01fa\0\u0228"+
-    "\0\u0256\0\u0284\0\u02b2\0\u02e0\0\u030e\0\u033c\0\u036a\0\u0398"+
-    "\0\u03c6\0\u03f4\0\u0422\0\u0450\0\u047e\0\u04ac\0\u04da\0\u0508"+
-    "\0\u0536\0\u0564\0\56\0\u0592\0\u05c0\0\u05ee\0\56\0\u061c"+
-    "\0\u064a\0\u0142\0\u0678\0\u06a6\0\u06d4\0\u0702\0\u0730\0\u075e"+
-    "\0\u078c\0\u07ba\0\u07e8\0\u0816\0\u0844\0\u0872\0\u08a0\0\u08ce"+
-    "\0\u08fc\0\u092a\0\u01fa\0\u0958\0\u0986\0\u09b4\0\u09e2\0\u0a10"+
-    "\0\u0a3e\0\u0a6c\0\u0a9a\0\u0ac8\0\u0af6\0\56\0\u0b24\0\u0b52"+
-    "\0\u0b80\0\u0b80\0\u0bae\0\u0bdc\0\u0c0a\0\u0c38\0\u0c66\0\u0c94"+
-    "\0\u0cc2\0\u0cf0\0\u0d1e\0\u0d4c\0\u0d7a\0\u0da8\0\u0dd6\0\u0e04"+
-    "\0\u0e32\0\u0e60\0\u0e8e\0\u0ebc\0\u0eea\0\u0f18\0\u0f46\0\u0f74"+
-    "\0\u01fa\0\u0fa2\0\u0fd0\0\u0ffe\0\u102c\0\u105a\0\u1088\0\u10b6"+
-    "\0\u10e4\0\u1112\0\u1140\0\u116e\0\u119c\0\u11ca\0\u11f8\0\u1226"+
-    "\0\u1254\0\u1282\0\u1140\0\u12b0";
+    "\0\0\0\71\0\162\0\253\0\162\0\162\0\344\0\u011d"+
+    "\0\u0156\0\u018f\0\u01c8\0\162\0\162\0\u0201\0\u01c8\0\162"+
+    "\0\u01c8\0\u023a\0\u0273\0\u02ac\0\u02e5\0\162\0\162\0\u031e"+
+    "\0\u0357\0\u0390\0\u03c9\0\u0402\0\u043b\0\u0474\0\162\0\162"+
+    "\0\u04ad\0\u04e6\0\u051f\0\u0558\0\u0591\0\u05ca\0\u0603\0\u063c"+
+    "\0\u0675\0\u06ae\0\u06e7\0\u0720\0\u0759\0\u0792\0\u07cb\0\u0804"+
+    "\0\162\0\162\0\162\0\u083d\0\u0876\0\u08af\0\162\0\u08e8"+
+    "\0\162\0\u01c8\0\u0921\0\u01c8\0\u023a\0\u095a\0\u0993\0\u09cc"+
+    "\0\162\0\162\0\162\0\u0a05\0\u0a3e\0\u0a77\0\u0ab0\0\u0ae9"+
+    "\0\u0b22\0\u0b5b\0\u0b94\0\u0bcd\0\u0c06\0\u0c3f\0\u0c78\0\u0cb1"+
+    "\0\u0cea\0\u0d23\0\u03c9\0\u0d5c\0\u03c9\0\u03c9\0\u0d95\0\u0dce"+
+    "\0\u03c9\0\u0e07\0\u0e40\0\u0e79\0\u0eb2\0\u0eeb\0\u0f24\0\u0f5d"+
+    "\0\162\0\u0f96\0\u0fcf\0\u1008\0\u1008\0\u1041\0\u107a\0\u10b3"+
+    "\0\u03c9\0\u10ec\0\u1125\0\u115e\0\u1197\0\u03c9\0\u11d0\0\u1209"+
+    "\0\u1242\0\u127b\0\u03c9\0\u12b4\0\u12ed\0\u1326\0\u135f\0\u1398"+
+    "\0\u03c9\0\u13d1\0\u140a\0\u1443\0\u147c\0\u14b5\0\u14ee\0\u1527"+
+    "\0\u1560\0\u03c9\0\u1599\0\u15d2\0\u160b\0\u1644\0\u03c9\0\u03c9"+
+    "\0\u167d\0\u16b6\0\u16ef\0\u1728\0\u1761\0\u179a\0\u17d3\0\u180c"+
+    "\0\u1845\0\u187e\0\u03c9\0\u18b7\0\u18f0\0\u1929\0\u1962\0\u199b"+
+    "\0\u19d4\0\u03c9\0\u1845\0\u1a0d\0\u03c9";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[116];
+    int [] result = new int[157];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -170,111 +184,129 @@ class PythonLexer {
   private static final int [] ZZ_TRANS = zzUnpacktrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\2\3\1\2\1\3\1\4\1\5\1\6\1\7"+
-    "\1\10\1\11\1\12\1\10\1\13\1\14\1\15\1\16"+
-    "\1\10\2\17\1\20\1\21\1\22\1\2\1\23\1\24"+
-    "\1\25\1\26\1\27\1\30\1\31\1\17\1\32\1\17"+
-    "\1\33\1\17\1\34\1\35\1\36\1\37\1\17\1\40"+
-    "\1\17\1\41\1\17\1\42\60\0\1\3\74\0\1\43"+
-    "\34\0\2\44\1\0\2\44\1\0\1\44\1\45\17\44"+
-    "\1\46\26\44\2\7\1\47\2\7\1\50\50\7\13\0"+
-    "\1\10\5\0\1\43\53\0\2\51\53\0\1\10\2\0"+
-    "\1\43\51\0\1\52\1\0\2\53\1\0\1\54\1\55"+
-    "\3\54\1\0\4\54\1\55\21\54\15\0\1\52\1\0"+
-    "\2\16\1\0\1\54\1\55\3\54\1\0\4\54\1\55"+
-    "\21\54\17\0\2\17\1\0\5\17\1\0\26\17\17\0"+
-    "\2\17\1\0\5\17\1\0\1\56\25\17\17\0\2\17"+
-    "\1\0\5\17\1\0\15\17\1\57\10\17\17\0\2\17"+
-    "\1\0\5\17\1\0\17\17\1\60\6\17\17\0\2\17"+
-    "\1\0\5\17\1\0\14\17\1\61\3\17\1\62\5\17"+
-    "\17\0\2\17\1\0\5\17\1\0\17\17\1\63\6\17"+
-    "\17\0\2\17\1\0\5\17\1\0\12\17\1\36\2\17"+
-    "\1\64\10\17\17\0\2\17\1\0\5\17\1\0\4\17"+
-    "\1\65\21\17\17\0\2\17\1\0\5\17\1\0\12\17"+
-    "\1\66\11\17\1\67\1\17\17\0\2\17\1\0\5\17"+
-    "\1\0\10\17\1\70\4\17\1\35\1\17\1\71\6\17"+
-    "\17\0\2\17\1\0\5\17\1\0\12\17\1\72\13\17"+
-    "\17\0\2\17\1\0\5\17\1\0\5\17\1\73\5\17"+
-    "\1\74\1\73\3\17\1\73\5\17\17\0\2\17\1\0"+
-    "\5\17\1\0\1\75\25\17\17\0\2\17\1\0\5\17"+
-    "\1\0\15\17\1\76\10\17\17\0\2\17\1\0\5\17"+
-    "\1\0\17\17\1\73\6\17\17\0\2\17\1\0\5\17"+
-    "\1\0\1\77\25\17\17\0\2\17\1\0\5\17\1\0"+
-    "\1\100\3\17\1\101\21\17\17\0\2\17\1\0\5\17"+
-    "\1\0\17\17\1\102\6\17\17\0\2\17\1\0\5\17"+
-    "\1\0\7\17\1\103\1\104\15\17\17\0\2\17\1\0"+
-    "\5\17\1\0\10\17\1\105\15\17\2\44\1\0\2\44"+
-    "\1\0\1\44\1\106\17\44\1\46\26\44\7\0\1\107"+
-    "\46\0\2\44\4\0\50\44\2\0\1\47\72\0\2\51"+
-    "\2\0\1\110\10\0\1\110\40\0\2\53\1\0\5\54"+
-    "\1\0\26\54\22\0\5\54\1\0\26\54\14\0\1\111"+
-    "\2\0\2\112\1\0\5\54\1\0\26\54\17\0\2\17"+
-    "\1\0\5\17\1\0\12\17\1\113\13\17\17\0\2\17"+
-    "\1\0\5\17\1\0\14\17\1\114\11\17\17\0\2\17"+
-    "\1\0\5\17\1\0\22\17\1\115\3\17\17\0\2\17"+
-    "\1\0\5\17\1\0\3\17\1\73\22\17\17\0\2\17"+
-    "\1\0\5\17\1\0\20\17\1\116\5\17\17\0\2\17"+
-    "\1\0\5\17\1\0\4\17\1\117\21\17\17\0\2\17"+
-    "\1\0\5\17\1\0\14\17\1\120\11\17\17\0\2\17"+
-    "\1\0\5\17\1\0\5\17\1\73\4\17\1\73\13\17"+
-    "\17\0\2\17\1\0\5\17\1\0\10\17\1\121\7\17"+
-    "\1\114\5\17\17\0\2\17\1\0\5\17\1\0\2\17"+
-    "\1\122\23\17\17\0\2\17\1\0\5\17\1\0\14\17"+
-    "\1\123\11\17\17\0\2\17\1\0\5\17\1\0\15\17"+
-    "\1\124\10\17\17\0\2\17\1\0\5\17\1\0\15\17"+
-    "\1\125\10\17\17\0\2\17\1\0\5\17\1\0\16\17"+
-    "\1\126\7\17\17\0\2\17\1\0\5\17\1\0\13\17"+
-    "\1\127\12\17\17\0\2\17\1\0\5\17\1\0\14\17"+
-    "\1\130\4\17\1\73\4\17\17\0\2\17\1\0\5\17"+
-    "\1\0\20\17\1\131\5\17\17\0\2\17\1\0\5\17"+
-    "\1\0\10\17\1\132\15\17\17\0\2\17\1\0\5\17"+
-    "\1\0\21\17\1\133\4\17\17\0\2\17\1\0\5\17"+
-    "\1\0\25\17\1\73\17\0\2\17\1\0\5\17\1\0"+
-    "\10\17\1\134\15\17\17\0\2\17\1\0\5\17\1\0"+
-    "\21\17\1\135\4\17\17\0\2\17\1\0\5\17\1\0"+
-    "\4\17\1\136\21\17\7\107\1\137\17\107\1\140\26\107"+
-    "\14\0\1\111\2\0\2\112\54\0\2\112\54\0\2\17"+
-    "\1\0\5\17\1\0\20\17\1\115\5\17\17\0\2\17"+
-    "\1\0\5\17\1\0\4\17\1\73\21\17\17\0\2\17"+
-    "\1\0\5\17\1\0\4\17\1\141\21\17\17\0\2\17"+
-    "\1\0\5\17\1\0\4\17\1\142\21\17\17\0\2\17"+
-    "\1\0\5\17\1\0\1\143\25\17\17\0\2\17\1\0"+
-    "\5\17\1\0\21\17\1\144\4\17\17\0\2\17\1\0"+
-    "\5\17\1\0\5\17\1\73\20\17\17\0\2\17\1\0"+
-    "\5\17\1\0\4\17\1\145\21\17\17\0\2\17\1\0"+
-    "\5\17\1\0\1\146\25\17\17\0\2\17\1\0\5\17"+
-    "\1\0\13\17\1\73\12\17\17\0\2\17\1\0\5\17"+
-    "\1\0\1\17\1\147\24\17\17\0\2\17\1\0\5\17"+
-    "\1\0\15\17\1\142\10\17\17\0\2\17\1\0\5\17"+
-    "\1\0\1\17\1\150\24\17\17\0\2\17\1\0\5\17"+
-    "\1\0\12\17\1\151\13\17\17\0\2\17\1\0\5\17"+
-    "\1\0\20\17\1\73\5\17\17\0\2\17\1\0\5\17"+
-    "\1\0\20\17\1\114\5\17\17\0\2\17\1\0\5\17"+
-    "\1\0\22\17\1\152\3\17\17\0\2\17\1\0\5\17"+
-    "\1\0\12\17\1\114\13\17\17\0\2\17\1\0\5\17"+
-    "\1\0\7\17\1\73\16\17\17\0\2\17\1\0\5\17"+
-    "\1\0\12\17\1\61\13\17\7\107\1\153\17\107\1\140"+
-    "\30\107\4\0\50\107\17\0\2\17\1\0\5\17\1\0"+
-    "\17\17\1\154\6\17\17\0\2\17\1\0\5\17\1\0"+
-    "\11\17\1\73\14\17\17\0\2\17\1\0\5\17\1\0"+
-    "\10\17\1\155\15\17\17\0\2\17\1\0\5\17\1\0"+
-    "\16\17\1\154\7\17\17\0\2\17\1\0\5\17\1\0"+
-    "\12\17\1\156\13\17\17\0\2\17\1\0\5\17\1\0"+
-    "\1\157\25\17\17\0\2\17\1\0\5\17\1\0\3\17"+
-    "\1\160\22\17\17\0\2\17\1\0\5\17\1\0\15\17"+
-    "\1\161\10\17\17\0\2\17\1\0\5\17\1\0\17\17"+
-    "\1\162\6\17\7\107\1\163\17\107\1\140\26\107\17\0"+
-    "\2\17\1\0\5\17\1\0\21\17\1\73\4\17\17\0"+
-    "\2\17\1\0\5\17\1\0\14\17\1\164\11\17\17\0"+
-    "\2\17\1\0\5\17\1\0\12\17\1\102\13\17\17\0"+
-    "\2\17\1\0\5\17\1\0\12\17\1\73\13\17\17\0"+
-    "\2\17\1\0\5\17\1\0\1\73\25\17\17\0\2\17"+
-    "\1\0\5\17\1\0\2\17\1\147\23\17\17\0\2\17"+
-    "\1\0\5\17\1\0\14\17\1\73\11\17\17\0\2\17"+
-    "\1\0\5\17\1\0\22\17\1\114\3\17";
+    "\1\3\1\4\1\5\1\3\1\6\1\7\1\10\1\11"+
+    "\1\12\1\13\1\14\1\15\1\16\1\17\1\20\1\21"+
+    "\1\22\1\23\1\24\1\25\1\26\1\27\1\30\1\31"+
+    "\1\32\2\33\1\34\1\35\1\36\1\37\1\3\1\40"+
+    "\1\41\1\42\1\43\1\44\1\45\1\46\1\47\1\33"+
+    "\1\50\1\33\1\51\1\33\1\52\1\53\1\54\1\55"+
+    "\1\33\1\56\1\33\1\57\1\33\1\60\1\61\1\62"+
+    "\1\3\1\6\2\3\1\6\1\3\1\10\1\11\1\12"+
+    "\1\13\1\14\1\15\1\16\1\17\1\20\1\21\1\22"+
+    "\1\23\1\24\1\25\1\26\1\27\1\30\1\31\1\32"+
+    "\2\33\1\34\1\35\1\36\1\37\1\3\1\40\1\41"+
+    "\1\42\1\43\1\44\1\45\1\46\1\47\1\33\1\50"+
+    "\1\33\1\51\1\33\1\52\1\53\1\54\1\55\1\33"+
+    "\1\56\1\33\1\57\1\33\1\60\1\61\1\62\72\0"+
+    "\1\4\71\0\1\5\115\0\1\63\41\0\2\64\1\0"+
+    "\2\64\1\0\1\64\1\65\27\64\1\66\31\64\2\12"+
+    "\1\67\2\12\1\70\63\12\27\0\1\71\55\0\1\72"+
+    "\12\0\1\71\63\0\2\73\66\0\1\74\5\0\1\71"+
+    "\61\0\1\75\1\0\2\76\5\0\1\77\1\100\3\77"+
+    "\3\0\4\77\1\100\21\77\22\0\1\75\1\0\2\25"+
+    "\5\0\1\77\1\100\3\77\3\0\4\77\1\100\21\77"+
+    "\31\0\1\101\70\0\1\102\70\0\1\103\63\0\2\33"+
+    "\5\0\5\33\3\0\26\33\24\0\2\33\5\0\5\33"+
+    "\3\0\1\104\25\33\24\0\2\33\5\0\5\33\3\0"+
+    "\15\33\1\105\10\33\24\0\2\33\5\0\5\33\3\0"+
+    "\17\33\1\106\6\33\24\0\2\33\5\0\5\33\3\0"+
+    "\14\33\1\107\3\33\1\110\5\33\24\0\2\33\5\0"+
+    "\5\33\3\0\17\33\1\111\6\33\24\0\2\33\5\0"+
+    "\5\33\3\0\12\33\1\112\2\33\1\113\10\33\24\0"+
+    "\2\33\5\0\5\33\3\0\4\33\1\114\21\33\24\0"+
+    "\2\33\5\0\5\33\3\0\12\33\1\115\11\33\1\116"+
+    "\1\33\24\0\2\33\5\0\5\33\3\0\10\33\1\117"+
+    "\4\33\1\120\1\33\1\121\6\33\24\0\2\33\5\0"+
+    "\5\33\3\0\12\33\1\122\13\33\24\0\2\33\5\0"+
+    "\5\33\3\0\5\33\1\123\5\33\1\124\1\125\3\33"+
+    "\1\126\5\33\24\0\2\33\5\0\5\33\3\0\1\127"+
+    "\25\33\24\0\2\33\5\0\5\33\3\0\15\33\1\130"+
+    "\10\33\24\0\2\33\5\0\5\33\3\0\17\33\1\131"+
+    "\6\33\24\0\2\33\5\0\5\33\3\0\1\132\25\33"+
+    "\24\0\2\33\5\0\5\33\3\0\1\133\3\33\1\134"+
+    "\21\33\24\0\2\33\5\0\5\33\3\0\17\33\1\135"+
+    "\6\33\24\0\2\33\5\0\5\33\3\0\7\33\1\136"+
+    "\1\137\15\33\24\0\2\33\5\0\5\33\3\0\10\33"+
+    "\1\140\15\33\2\0\2\64\1\0\2\64\1\0\1\64"+
+    "\1\141\27\64\1\66\31\64\7\0\1\142\61\0\2\64"+
+    "\4\0\63\64\2\0\1\67\110\0\2\73\6\0\1\143"+
+    "\12\0\1\143\45\0\2\76\5\0\5\77\3\0\26\77"+
+    "\33\0\5\77\3\0\26\77\17\0\1\144\1\0\1\144"+
+    "\2\0\2\145\5\0\5\77\3\0\26\77\24\0\2\33"+
+    "\5\0\5\33\3\0\12\33\1\146\13\33\24\0\2\33"+
+    "\5\0\5\33\3\0\14\33\1\147\11\33\24\0\2\33"+
+    "\5\0\5\33\3\0\22\33\1\150\3\33\24\0\2\33"+
+    "\5\0\5\33\3\0\3\33\1\151\22\33\24\0\2\33"+
+    "\5\0\5\33\3\0\20\33\1\152\5\33\24\0\2\33"+
+    "\5\0\5\33\3\0\4\33\1\153\21\33\24\0\2\33"+
+    "\5\0\5\33\3\0\1\154\25\33\24\0\2\33\5\0"+
+    "\5\33\3\0\14\33\1\155\11\33\24\0\2\33\5\0"+
+    "\5\33\3\0\5\33\1\156\4\33\1\126\13\33\24\0"+
+    "\2\33\5\0\5\33\3\0\10\33\1\157\7\33\1\160"+
+    "\5\33\24\0\2\33\5\0\5\33\3\0\2\33\1\161"+
+    "\23\33\24\0\2\33\5\0\5\33\3\0\14\33\1\162"+
+    "\11\33\24\0\2\33\5\0\5\33\3\0\17\33\1\163"+
+    "\6\33\24\0\2\33\5\0\5\33\3\0\15\33\1\164"+
+    "\10\33\24\0\2\33\5\0\5\33\3\0\15\33\1\165"+
+    "\10\33\24\0\2\33\5\0\5\33\3\0\16\33\1\166"+
+    "\7\33\24\0\2\33\5\0\5\33\3\0\13\33\1\167"+
+    "\12\33\24\0\2\33\5\0\5\33\3\0\14\33\1\170"+
+    "\4\33\1\171\4\33\24\0\2\33\5\0\5\33\3\0"+
+    "\20\33\1\172\5\33\24\0\2\33\5\0\5\33\3\0"+
+    "\10\33\1\173\15\33\24\0\2\33\5\0\5\33\3\0"+
+    "\21\33\1\174\4\33\24\0\2\33\5\0\5\33\3\0"+
+    "\25\33\1\126\24\0\2\33\5\0\5\33\3\0\10\33"+
+    "\1\175\15\33\24\0\2\33\5\0\5\33\3\0\21\33"+
+    "\1\176\4\33\24\0\2\33\5\0\5\33\3\0\4\33"+
+    "\1\177\21\33\2\0\7\142\1\200\27\142\1\201\31\142"+
+    "\15\0\1\144\1\0\1\144\2\0\2\145\67\0\2\145"+
+    "\67\0\2\33\5\0\5\33\3\0\20\33\1\150\5\33"+
+    "\24\0\2\33\5\0\5\33\3\0\4\33\1\126\21\33"+
+    "\24\0\2\33\5\0\5\33\3\0\4\33\1\202\21\33"+
+    "\24\0\2\33\5\0\5\33\3\0\4\33\1\203\21\33"+
+    "\24\0\2\33\5\0\5\33\3\0\1\204\25\33\24\0"+
+    "\2\33\5\0\5\33\3\0\20\33\1\205\5\33\24\0"+
+    "\2\33\5\0\5\33\3\0\21\33\1\206\4\33\24\0"+
+    "\2\33\5\0\5\33\3\0\5\33\1\207\20\33\24\0"+
+    "\2\33\5\0\5\33\3\0\4\33\1\210\21\33\24\0"+
+    "\2\33\5\0\5\33\3\0\4\33\1\211\21\33\24\0"+
+    "\2\33\5\0\5\33\3\0\1\212\25\33\24\0\2\33"+
+    "\5\0\5\33\3\0\13\33\1\126\12\33\24\0\2\33"+
+    "\5\0\5\33\3\0\1\33\1\213\24\33\24\0\2\33"+
+    "\5\0\5\33\3\0\15\33\1\203\10\33\24\0\2\33"+
+    "\5\0\5\33\3\0\1\33\1\214\24\33\24\0\2\33"+
+    "\5\0\5\33\3\0\12\33\1\215\13\33\24\0\2\33"+
+    "\5\0\5\33\3\0\20\33\1\126\5\33\24\0\2\33"+
+    "\5\0\5\33\3\0\20\33\1\147\5\33\24\0\2\33"+
+    "\5\0\5\33\3\0\22\33\1\216\3\33\24\0\2\33"+
+    "\5\0\5\33\3\0\12\33\1\217\13\33\24\0\2\33"+
+    "\5\0\5\33\3\0\7\33\1\126\16\33\24\0\2\33"+
+    "\5\0\5\33\3\0\12\33\1\220\13\33\2\0\7\142"+
+    "\1\221\27\142\1\201\33\142\4\0\63\142\22\0\2\33"+
+    "\5\0\5\33\3\0\17\33\1\222\6\33\24\0\2\33"+
+    "\5\0\5\33\3\0\11\33\1\126\14\33\24\0\2\33"+
+    "\5\0\5\33\3\0\20\33\1\223\5\33\24\0\2\33"+
+    "\5\0\5\33\3\0\10\33\1\224\15\33\24\0\2\33"+
+    "\5\0\5\33\3\0\16\33\1\222\7\33\24\0\2\33"+
+    "\5\0\5\33\3\0\12\33\1\225\13\33\24\0\2\33"+
+    "\5\0\5\33\3\0\1\226\25\33\24\0\2\33\5\0"+
+    "\5\33\3\0\3\33\1\227\22\33\24\0\2\33\5\0"+
+    "\5\33\3\0\15\33\1\230\10\33\24\0\2\33\5\0"+
+    "\5\33\3\0\17\33\1\231\6\33\24\0\2\33\5\0"+
+    "\5\33\3\0\4\33\1\232\21\33\24\0\2\33\5\0"+
+    "\5\33\3\0\3\33\1\126\22\33\2\0\7\142\1\233"+
+    "\27\142\1\201\31\142\22\0\2\33\5\0\5\33\3\0"+
+    "\21\33\1\126\4\33\24\0\2\33\5\0\5\33\3\0"+
+    "\14\33\1\234\11\33\24\0\2\33\5\0\5\33\3\0"+
+    "\12\33\1\135\13\33\24\0\2\33\5\0\5\33\3\0"+
+    "\12\33\1\126\13\33\24\0\2\33\5\0\5\33\3\0"+
+    "\1\126\25\33\24\0\2\33\5\0\5\33\3\0\2\33"+
+    "\1\213\23\33\24\0\2\33\5\0\5\33\3\0\14\33"+
+    "\1\235\11\33\24\0\2\33\5\0\5\33\3\0\22\33"+
+    "\1\147\3\33\2\0";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[4830];
+    int [] result = new int[6726];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -317,12 +349,14 @@ class PythonLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\2\11\5\1\1\11\31\1\1\11\1\0\1\1"+
-    "\1\0\1\11\2\1\2\0\32\1\1\11\3\0\25\1"+
-    "\2\0\12\1\1\0\11\1";
+    "\1\1\1\0\1\11\1\1\2\11\5\1\2\11\2\1"+
+    "\1\11\5\1\2\11\7\1\2\11\20\1\3\11\1\0"+
+    "\1\1\1\0\1\11\1\1\1\11\3\1\2\0\2\1"+
+    "\3\11\35\1\1\11\3\0\33\1\2\0\17\1\1\0"+
+    "\14\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[116];
+    int [] result = new int[157];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -396,23 +430,104 @@ class PythonLexer {
   private boolean zzAtBOL = true;
 
   /** Whether the user-EOF-code has already been executed. */
-  @SuppressWarnings("unused")
   private boolean zzEOFDone;
 
   /* user code: */
-    private Token token(String type, String value, Color color) {
-        return new Token(type, value, yyline + 1, yycolumn + 1, color);
-    }
-
+    // Token colors for syntax highlighting
     private static final Color KEYWORD_COLOR = new Color(147, 199, 99);    // Green
     private static final Color OPERATOR_COLOR = new Color(103, 140, 177);  // Blue
     private static final Color STRING_COLOR = new Color(214, 157, 133);    // Orange
     private static final Color COMMENT_COLOR = new Color(128, 128, 128);   // Gray
-    private static final Color NUMBER_COLOR = new Color(104, 151, 187);    // Light Blue
+    private static final Color NUMBER_COLOR = new Color(122, 30, 183);     // Purple
     private static final Color DELIMITER_COLOR = new Color(103, 140, 177); // Blue
     private static final Color BOOLEAN_COLOR = new Color(147, 199, 99);    // Green
     private static final Color ERROR_COLOR = new Color(229, 84, 81);       // Red
     private static final Color DEFAULT_COLOR = new Color(204, 204, 204);   // Light Gray
+    
+    // Indentation tracking
+    private int currentIndent = 0;
+    private Stack<Integer> indentStack = new Stack<>();
+    private Queue<Symbol> indentationTokens = new LinkedList<>();
+    private boolean atLineStart = true;
+    
+    // Symbol creation helper methods
+    private Symbol symbol(int type) {
+        return new Symbol(type, yyline, yycolumn);
+    }
+    
+    private Symbol symbol(int type, Object value) {
+        return new Symbol(type, yyline, yycolumn, value);
+    }
+    
+    // Token creation for syntax highlighting
+    private Token token(String type, String value, Color color) {
+        return new Token(type, value, yyline + 1, yycolumn + 1, color);
+    }
+    
+    // Method to handle indentation
+    private Symbol handleIndentation(int spaces) {
+        if (spaces > currentIndent) {
+            // Indent
+            indentStack.push(currentIndent);
+            currentIndent = spaces;
+            return symbol(sym.INDENT);
+        } else if (spaces < currentIndent) {
+            // Dedent
+            int dedents = 0;
+            while (!indentStack.isEmpty() && spaces < currentIndent) {
+                currentIndent = indentStack.pop();
+                dedents++;
+            }
+            
+            // Queue up multiple DEDENT tokens if needed
+            for (int i = 1; i < dedents; i++) {
+                indentationTokens.add(symbol(sym.DEDENT));
+            }
+            
+            return symbol(sym.DEDENT);
+        }
+        
+        return null;
+    }
+    
+    // Method to get the next token, handling indentation
+    public Symbol next_token() throws java.io.IOException {
+        // Check if we have queued indentation tokens
+        if (!indentationTokens.isEmpty()) {
+            return indentationTokens.poll();
+        }
+
+        // Get the next token from the lexer
+        Symbol token = scan();
+
+        // If we're at the end of the file, return EOF
+        if (token == null) {
+            // Generate DEDENT tokens for any remaining indentation levels
+            if (currentIndent > 0) {
+                currentIndent = 0;
+                return symbol(sym.DEDENT);
+            }
+            return symbol(sym.EOF);
+        }
+
+        return token;
+    }
+    
+    // Compatibility method for the original code
+    public Token yylex() throws java.io.IOException {
+        Symbol symbol = next_token();
+        if (symbol == null || symbol.value == null) {
+            return null;
+        }
+        
+        // Extract the Token from the Symbol
+        if (symbol.value instanceof Token) {
+            return (Token) symbol.value;
+        }
+        
+        // If the Symbol doesn't contain a Token, create a default one
+        return token("UNKNOWN", symbol.toString(), DEFAULT_COLOR);
+    }
 
 
   /**
@@ -675,6 +790,18 @@ class PythonLexer {
   }
 
 
+  /**
+   * Contains user EOF-code, which will be executed exactly once,
+   * when the end of file is reached
+   */
+  private void zzDoEOF() throws java.io.IOException {
+    if (!zzEOFDone) {
+      zzEOFDone = true;
+    
+  yyclose();    }
+  }
+
+
 
 
   /**
@@ -684,7 +811,7 @@ class PythonLexer {
    * @return the next token.
    * @exception java.io.IOException if any I/O-Error occurs.
    */
-  public Token yylex() throws java.io.IOException
+  public Symbol scan() throws java.io.IOException
   {
     int zzInput;
     int zzAction;
@@ -821,75 +948,264 @@ class PythonLexer {
 
       if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
         zzAtEOF = true;
-        return null;
+            zzDoEOF();
+          { return new java_cup.runtime.Symbol(sym.EOF); }
       }
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { return token("ERROR", "Invalid character: " + yytext(), ERROR_COLOR);
+            { if (atLineStart) {
+            int spaces = yytext().length();
+            Symbol indentToken = handleIndentation(spaces);
+            atLineStart = false;
+            if (indentToken != null) {
+                return indentToken;
+            }
+        }
             }
           // fall through
-          case 14: break;
+          case 50: break;
           case 2:
-            { /* Ignorar espacios y saltos de línea */
+            { return symbol(sym.error, token("ERROR", "Invalid character: " + yytext(), ERROR_COLOR));
             }
           // fall through
-          case 15: break;
+          case 51: break;
           case 3:
-            { return token("COMMENT", yytext(), COMMENT_COLOR);
+            { atLineStart = true;
+        return symbol(sym.NEWLINE);
             }
           // fall through
-          case 16: break;
+          case 52: break;
           case 4:
-            { return token("OPERATOR", yytext(), OPERATOR_COLOR);
+            { /* Ignore whitespace */
             }
           // fall through
-          case 17: break;
+          case 53: break;
           case 5:
-            { return token("DELIMITER", yytext(), DELIMITER_COLOR);
+            { return symbol(sym.COMMENT, token("COMMENT", yytext(), COMMENT_COLOR));
             }
           // fall through
-          case 18: break;
+          case 54: break;
           case 6:
-            { return token("INTEGER", yytext(), NUMBER_COLOR);
+            { return symbol(sym.MODULO, token("OPERATOR", yytext(), OPERATOR_COLOR));
             }
           // fall through
-          case 19: break;
+          case 55: break;
           case 7:
-            { return token("IDENTIFIER", yytext(), DEFAULT_COLOR);
+            { return symbol(sym.LPAREN, token("DELIMITER", yytext(), DELIMITER_COLOR));
             }
           // fall through
-          case 20: break;
+          case 56: break;
           case 8:
-            { return token("STRING", yytext(), STRING_COLOR);
+            { return symbol(sym.RPAREN, token("DELIMITER", yytext(), DELIMITER_COLOR));
             }
           // fall through
-          case 21: break;
+          case 57: break;
           case 9:
-            { return token("FLOAT", yytext(), NUMBER_COLOR);
+            { return symbol(sym.TIMES, token("OPERATOR", yytext(), OPERATOR_COLOR));
             }
           // fall through
-          case 22: break;
+          case 58: break;
           case 10:
-            { return token("ERROR", "Invalid identifier: " + yytext(), ERROR_COLOR);
+            { return symbol(sym.PLUS, token("OPERATOR", yytext(), OPERATOR_COLOR));
             }
           // fall through
-          case 23: break;
+          case 59: break;
           case 11:
-            { return token("KEYWORD", yytext(), KEYWORD_COLOR);
+            { return symbol(sym.COMMA, token("DELIMITER", yytext(), DELIMITER_COLOR));
             }
           // fall through
-          case 24: break;
+          case 60: break;
           case 12:
-            { return token("SCIENTIFIC", yytext(), NUMBER_COLOR);
+            { return symbol(sym.MINUS, token("OPERATOR", yytext(), OPERATOR_COLOR));
             }
           // fall through
-          case 25: break;
+          case 61: break;
           case 13:
-            { return token("BOOLEAN", yytext(), BOOLEAN_COLOR);
+            { return symbol(sym.DOT, token("DELIMITER", yytext(), DELIMITER_COLOR));
             }
           // fall through
-          case 26: break;
+          case 62: break;
+          case 14:
+            { return symbol(sym.DIVIDE, token("OPERATOR", yytext(), OPERATOR_COLOR));
+            }
+          // fall through
+          case 63: break;
+          case 15:
+            { return symbol(sym.INTEGER, token("INTEGER", yytext(), NUMBER_COLOR));
+            }
+          // fall through
+          case 64: break;
+          case 16:
+            { return symbol(sym.COLON, token("DELIMITER", yytext(), DELIMITER_COLOR));
+            }
+          // fall through
+          case 65: break;
+          case 17:
+            { return symbol(sym.SEMICOLON, token("DELIMITER", yytext(), DELIMITER_COLOR));
+            }
+          // fall through
+          case 66: break;
+          case 18:
+            { return symbol(sym.LESS, token("OPERATOR", yytext(), OPERATOR_COLOR));
+            }
+          // fall through
+          case 67: break;
+          case 19:
+            { return symbol(sym.ASSIGN, token("OPERATOR", yytext(), OPERATOR_COLOR));
+            }
+          // fall through
+          case 68: break;
+          case 20:
+            { return symbol(sym.GREATER, token("OPERATOR", yytext(), OPERATOR_COLOR));
+            }
+          // fall through
+          case 69: break;
+          case 21:
+            { return symbol(sym.IDENTIFIER, token("IDENTIFIER", yytext(), DEFAULT_COLOR));
+            }
+          // fall through
+          case 70: break;
+          case 22:
+            { return symbol(sym.LBRACKET, token("DELIMITER", yytext(), DELIMITER_COLOR));
+            }
+          // fall through
+          case 71: break;
+          case 23:
+            { return symbol(sym.RBRACKET, token("DELIMITER", yytext(), DELIMITER_COLOR));
+            }
+          // fall through
+          case 72: break;
+          case 24:
+            { return symbol(sym.LBRACE, token("DELIMITER", yytext(), DELIMITER_COLOR));
+            }
+          // fall through
+          case 73: break;
+          case 25:
+            { return symbol(sym.RBRACE, token("DELIMITER", yytext(), DELIMITER_COLOR));
+            }
+          // fall through
+          case 74: break;
+          case 26:
+            { return symbol(sym.NOT_EQUALS, token("OPERATOR", yytext(), OPERATOR_COLOR));
+            }
+          // fall through
+          case 75: break;
+          case 27:
+            { return symbol(sym.STRING, token("STRING", yytext(), STRING_COLOR));
+            }
+          // fall through
+          case 76: break;
+          case 28:
+            { return symbol(sym.IDENTIFIER, token("OPERATOR", yytext(), OPERATOR_COLOR));
+            }
+          // fall through
+          case 77: break;
+          case 29:
+            { return symbol(sym.POWER, token("OPERATOR", yytext(), OPERATOR_COLOR));
+            }
+          // fall through
+          case 78: break;
+          case 30:
+            { return symbol(sym.FLOAT, token("FLOAT", yytext(), NUMBER_COLOR));
+            }
+          // fall through
+          case 79: break;
+          case 31:
+            { return symbol(sym.error, token("ERROR", "Invalid identifier: " + yytext(), ERROR_COLOR));
+            }
+          // fall through
+          case 80: break;
+          case 32:
+            { return symbol(sym.LESS_EQUALS, token("OPERATOR", yytext(), OPERATOR_COLOR));
+            }
+          // fall through
+          case 81: break;
+          case 33:
+            { return symbol(sym.EQUALS, token("OPERATOR", yytext(), OPERATOR_COLOR));
+            }
+          // fall through
+          case 82: break;
+          case 34:
+            { return symbol(sym.GREATER_EQUALS, token("OPERATOR", yytext(), OPERATOR_COLOR));
+            }
+          // fall through
+          case 83: break;
+          case 35:
+            { return symbol(sym.IDENTIFIER, token("KEYWORD", yytext(), KEYWORD_COLOR));
+            }
+          // fall through
+          case 84: break;
+          case 36:
+            { return symbol(sym.IF, token("KEYWORD", yytext(), KEYWORD_COLOR));
+            }
+          // fall through
+          case 85: break;
+          case 37:
+            { return symbol(sym.IN, token("KEYWORD", yytext(), KEYWORD_COLOR));
+            }
+          // fall through
+          case 86: break;
+          case 38:
+            { return symbol(sym.OR, token("KEYWORD", yytext(), KEYWORD_COLOR));
+            }
+          // fall through
+          case 87: break;
+          case 39:
+            { return symbol(sym.FLOAT, token("SCIENTIFIC", yytext(), NUMBER_COLOR));
+            }
+          // fall through
+          case 88: break;
+          case 40:
+            { return symbol(sym.AND, token("KEYWORD", yytext(), KEYWORD_COLOR));
+            }
+          // fall through
+          case 89: break;
+          case 41:
+            { return symbol(sym.DEF, token("KEYWORD", yytext(), KEYWORD_COLOR));
+            }
+          // fall through
+          case 90: break;
+          case 42:
+            { return symbol(sym.FOR, token("KEYWORD", yytext(), KEYWORD_COLOR));
+            }
+          // fall through
+          case 91: break;
+          case 43:
+            { return symbol(sym.NOT, token("KEYWORD", yytext(), KEYWORD_COLOR));
+            }
+          // fall through
+          case 92: break;
+          case 44:
+            { return symbol(sym.BOOLEAN, token("BOOLEAN", yytext(), BOOLEAN_COLOR));
+            }
+          // fall through
+          case 93: break;
+          case 45:
+            { return symbol(sym.ELIF, token("KEYWORD", yytext(), KEYWORD_COLOR));
+            }
+          // fall through
+          case 94: break;
+          case 46:
+            { return symbol(sym.ELSE, token("KEYWORD", yytext(), KEYWORD_COLOR));
+            }
+          // fall through
+          case 95: break;
+          case 47:
+            { return symbol(sym.CLASS, token("KEYWORD", yytext(), KEYWORD_COLOR));
+            }
+          // fall through
+          case 96: break;
+          case 48:
+            { return symbol(sym.WHILE, token("KEYWORD", yytext(), KEYWORD_COLOR));
+            }
+          // fall through
+          case 97: break;
+          case 49:
+            { return symbol(sym.RETURN, token("KEYWORD", yytext(), KEYWORD_COLOR));
+            }
+          // fall through
+          case 98: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

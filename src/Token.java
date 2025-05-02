@@ -1,11 +1,12 @@
 import java.awt.Color;
 
 public class Token {
-    private final String type;
-    private final String value;
-    private final int line;
-    private final int column;
-    private final Color color;
+    private String type;
+    private String value;
+    private int line;
+    private int column;
+    private Color color;
+    private boolean isError;
 
     public Token(String type, String value, int line, int column, Color color) {
         this.type = type;
@@ -13,6 +14,7 @@ public class Token {
         this.line = line;
         this.column = column;
         this.color = color;
+        this.isError = type.equals("ERROR");
     }
 
     public String getType() {
@@ -36,13 +38,16 @@ public class Token {
     }
 
     public boolean isError() {
-        return type.equals("ERROR");
+        return isError;
     }
 
     @Override
     public String toString() {
-        return String.format("Token{type='%s', value='%s', line=%d, column=%d, color=%s}", 
-            type, value, line, column, color);
+        return "Token{" +
+                "type='" + type + '\'' +
+                ", value='" + value + '\'' +
+                ", line=" + line +
+                ", column=" + column +
+                '}';
     }
-
 }

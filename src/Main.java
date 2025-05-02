@@ -61,7 +61,7 @@ public class Main {
             outputPane = new JTextPane();
             outputPane.setEditable(false);
             outputPane.setFont(new Font("Monospaced", Font.PLAIN, 14));
-            outputPane.setBackground(new Color(251, 248, 248)); // Dark background
+            outputPane.setBackground(new Color(251, 248, 248)); // Light background
             JScrollPane outputScrollPane = new JScrollPane(outputPane);
             
             // Create a split pane for errors and tokens
@@ -139,10 +139,6 @@ public class Main {
         tokenArea.setText("");
         
         try {
-            // Create a new lexer
-            PythonLexer lexer = new PythonLexer(new StringReader(input));
-            Token token;
-            
             // Create styled document for output
             StyledDocument doc = new DefaultStyledDocument();
             try {
@@ -152,36 +148,77 @@ public class Main {
                 return;
             }
             
-            // Process all tokens
-            StringBuilder errors = new StringBuilder();
+            // Process all tokens for lexical analysis and syntax highlighting
+            StringBuilder lexicalErrors = new StringBuilder();
             StringBuilder tokenInfo = new StringBuilder();
+            
+            // Create a new lexer
+            PythonLexer lexer = new PythonLexer(new StringReader(input));
+            Token token;
+            
+            // First pass: collect tokens for display and highlighting
             while ((token = lexer.yylex()) != null) {
                 tokens.add(token);
                 
-                // Handle errors
+                // Handle lexical errors
                 if (token.isError()) {
-                    errors.append(String.format("ERROR at row %d, column %d: %s%n", 
+                    lexicalErrors.append(String.format("LEXICAL ERROR at row %d, column %d: %s%n", 
                         token.getLine(), token.getColumn(), token.getValue()));
                 }
                 
+                // Always add token information to the token info pane
                 tokenInfo.append(formatTokenInfo(token));
                 
                 // Apply highlighting
                 SyntaxHighlighter.highlight(doc, token);
             }
             
+            // Parse for indentation and other syntax errors
+            PythonParser parser = new PythonParser(input);
+            parser.parse();
+            
+            // Collect all errors
+            StringBuilder allErrors = new StringBuilder();
+            
+            // Add lexical errors
+            if (lexicalErrors.length() > 0) {
+                allErrors.append("=== LEXICAL ERRORS ===\n");
+                allErrors.append(lexicalErrors);
+                allErrors.append("\n");
+            }
+            
+            // Add syntax errors
+            List<String> syntaxErrors = parser.getSyntaxErrors();
+            if (!syntaxErrors.isEmpty()) {
+                allErrors.append("=== SYNTAX ERRORS ===\n");
+                for (String error : syntaxErrors) {
+                    allErrors.append(error).append("\n");
+                }
+                allErrors.append("\n");
+            }
+            
+            // Add semantic errors
+            List<String> semanticErrors = parser.getSemanticErrors();
+            if (!semanticErrors.isEmpty()) {
+                allErrors.append("=== SEMANTIC ERRORS ===\n");
+                for (String error : semanticErrors) {
+                    allErrors.append(error).append("\n");
+                }
+            }
+            
             // Update UI
             outputPane.setStyledDocument(doc);
-            errorArea.setText(errors.toString());
+            errorArea.setText(allErrors.toString());
             tokenArea.setText(tokenInfo.toString());
             
-        } catch (IOException e) {
+        } catch (Exception e) {
             errorArea.setText("Error analyzing code: " + e.getMessage());
+            e.printStackTrace();
         }
     }
     
     private static String formatTokenInfo(Token token) {
-        String tokenType = token.getType().toString();
+        String tokenType = token.getType();
         String tokenValue = token.getValue();
         return String.format("%s at row %d, column %d: '%s'%n", 
             tokenType, token.getLine(), token.getColumn(), tokenValue);
