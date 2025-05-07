@@ -63,15 +63,12 @@ class PythonLexer {
 
   private static final String ZZ_CMAP_BLOCKS_PACKED_0 =
     "\11\0\1\1\1\2\1\3\1\4\1\5\22\0\1\1"+
-    "\1\6\1\7\1\10\1\0\1\11\2\0\2\12\1\13"+
-    "\1\14\1\12\1\14\1\15\1\16\1\17\11\20\2\12"+
-    "\1\11\1\21\1\11\2\0\4\22\1\23\1\24\7\22"+
-    "\1\25\5\22\1\26\6\22\1\12\1\27\1\12\1\0"+
-    "\1\22\1\0\1\30\1\31\1\32\1\33\1\34\1\35"+
-    "\1\36\1\37\1\40\1\22\1\41\1\42\1\43\1\44"+
-    "\1\45\1\46\1\22\1\47\1\50\1\51\1\52\1\22"+
-    "\1\53\1\54\1\55\1\22\1\12\1\0\1\12\7\0"+
-    "\1\3\u01a2\0\2\3\326\0\u0100\3";
+    "\1\0\1\6\1\7\4\0\1\10\1\11\1\12\1\13"+
+    "\1\0\1\14\1\15\1\16\1\17\11\20\1\21\2\0"+
+    "\1\22\3\0\32\23\1\0\1\24\2\0\1\23\1\0"+
+    "\3\23\1\25\1\26\1\27\2\23\1\30\2\23\1\31"+
+    "\1\23\1\32\3\23\1\33\1\34\1\35\1\36\5\23"+
+    "\12\0\1\3\u01a2\0\2\3\326\0\u0100\3";
 
   private static int [] zzUnpackcmap_blocks() {
     int [] result = new int[1024];
@@ -98,14 +95,14 @@ class PythonLexer {
   private static final int [] ZZ_ACTION = zzUnpackAction();
 
   private static final String ZZ_ACTION_PACKED_0 =
-    "\1\0\1\1\2\2\2\1\1\3\1\4\1\5\1\4"+
-    "\1\5\1\4\2\6\24\7\1\4\1\0\1\10\1\0"+
-    "\2\3\1\11\2\0\2\12\4\7\1\13\10\7\1\13"+
-    "\12\7\1\10\3\0\1\14\24\7\2\0\1\15\11\7"+
-    "\1\0\7\7\1\10\1\7";
+    "\1\0\1\1\1\2\1\3\1\2\1\1\1\4\1\5"+
+    "\1\6\1\7\1\10\1\11\1\1\1\12\2\13\1\14"+
+    "\1\15\5\16\1\0\1\17\1\0\2\4\1\20\2\0"+
+    "\1\21\2\16\1\22\1\16\1\23\2\16\1\24\2\16"+
+    "\1\25";
 
   private static int [] zzUnpackAction() {
-    int [] result = new int[116];
+    int [] result = new int[43];
     int offset = 0;
     offset = zzUnpackAction(ZZ_ACTION_PACKED_0, offset, result);
     return result;
@@ -130,24 +127,15 @@ class PythonLexer {
   private static final int [] ZZ_ROWMAP = zzUnpackRowMap();
 
   private static final String ZZ_ROWMAP_PACKED_0 =
-    "\0\0\0\56\0\56\0\134\0\212\0\270\0\346\0\212"+
-    "\0\56\0\u0114\0\u0142\0\u0170\0\u019e\0\u01cc\0\u01fa\0\u0228"+
-    "\0\u0256\0\u0284\0\u02b2\0\u02e0\0\u030e\0\u033c\0\u036a\0\u0398"+
-    "\0\u03c6\0\u03f4\0\u0422\0\u0450\0\u047e\0\u04ac\0\u04da\0\u0508"+
-    "\0\u0536\0\u0564\0\56\0\u0592\0\u05c0\0\u05ee\0\56\0\u061c"+
-    "\0\u064a\0\u0142\0\u0678\0\u06a6\0\u06d4\0\u0702\0\u0730\0\u075e"+
-    "\0\u078c\0\u07ba\0\u07e8\0\u0816\0\u0844\0\u0872\0\u08a0\0\u08ce"+
-    "\0\u08fc\0\u092a\0\u01fa\0\u0958\0\u0986\0\u09b4\0\u09e2\0\u0a10"+
-    "\0\u0a3e\0\u0a6c\0\u0a9a\0\u0ac8\0\u0af6\0\56\0\u0b24\0\u0b52"+
-    "\0\u0b80\0\u0b80\0\u0bae\0\u0bdc\0\u0c0a\0\u0c38\0\u0c66\0\u0c94"+
-    "\0\u0cc2\0\u0cf0\0\u0d1e\0\u0d4c\0\u0d7a\0\u0da8\0\u0dd6\0\u0e04"+
-    "\0\u0e32\0\u0e60\0\u0e8e\0\u0ebc\0\u0eea\0\u0f18\0\u0f46\0\u0f74"+
-    "\0\u01fa\0\u0fa2\0\u0fd0\0\u0ffe\0\u102c\0\u105a\0\u1088\0\u10b6"+
-    "\0\u10e4\0\u1112\0\u1140\0\u116e\0\u119c\0\u11ca\0\u11f8\0\u1226"+
-    "\0\u1254\0\u1282\0\u1140\0\u12b0";
+    "\0\0\0\37\0\37\0\37\0\76\0\135\0\174\0\37"+
+    "\0\37\0\37\0\37\0\37\0\233\0\37\0\272\0\331"+
+    "\0\37\0\37\0\370\0\u0117\0\u0136\0\u0155\0\u0174\0\135"+
+    "\0\37\0\u0193\0\37\0\u01b2\0\233\0\233\0\u01d1\0\u01f0"+
+    "\0\u020f\0\u022e\0\370\0\u024d\0\370\0\u026c\0\u028b\0\370"+
+    "\0\u02aa\0\u02c9\0\370";
 
   private static int [] zzUnpackRowMap() {
-    int [] result = new int[116];
+    int [] result = new int[43];
     int offset = 0;
     offset = zzUnpackRowMap(ZZ_ROWMAP_PACKED_0, offset, result);
     return result;
@@ -170,111 +158,31 @@ class PythonLexer {
   private static final int [] ZZ_TRANS = zzUnpacktrans();
 
   private static final String ZZ_TRANS_PACKED_0 =
-    "\1\2\2\3\1\2\1\3\1\4\1\5\1\6\1\7"+
-    "\1\10\1\11\1\12\1\10\1\13\1\14\1\15\1\16"+
-    "\1\10\2\17\1\20\1\21\1\22\1\2\1\23\1\24"+
-    "\1\25\1\26\1\27\1\30\1\31\1\17\1\32\1\17"+
-    "\1\33\1\17\1\34\1\35\1\36\1\37\1\17\1\40"+
-    "\1\17\1\41\1\17\1\42\60\0\1\3\74\0\1\43"+
-    "\34\0\2\44\1\0\2\44\1\0\1\44\1\45\17\44"+
-    "\1\46\26\44\2\7\1\47\2\7\1\50\50\7\13\0"+
-    "\1\10\5\0\1\43\53\0\2\51\53\0\1\10\2\0"+
-    "\1\43\51\0\1\52\1\0\2\53\1\0\1\54\1\55"+
-    "\3\54\1\0\4\54\1\55\21\54\15\0\1\52\1\0"+
-    "\2\16\1\0\1\54\1\55\3\54\1\0\4\54\1\55"+
-    "\21\54\17\0\2\17\1\0\5\17\1\0\26\17\17\0"+
-    "\2\17\1\0\5\17\1\0\1\56\25\17\17\0\2\17"+
-    "\1\0\5\17\1\0\15\17\1\57\10\17\17\0\2\17"+
-    "\1\0\5\17\1\0\17\17\1\60\6\17\17\0\2\17"+
-    "\1\0\5\17\1\0\14\17\1\61\3\17\1\62\5\17"+
-    "\17\0\2\17\1\0\5\17\1\0\17\17\1\63\6\17"+
-    "\17\0\2\17\1\0\5\17\1\0\12\17\1\36\2\17"+
-    "\1\64\10\17\17\0\2\17\1\0\5\17\1\0\4\17"+
-    "\1\65\21\17\17\0\2\17\1\0\5\17\1\0\12\17"+
-    "\1\66\11\17\1\67\1\17\17\0\2\17\1\0\5\17"+
-    "\1\0\10\17\1\70\4\17\1\35\1\17\1\71\6\17"+
-    "\17\0\2\17\1\0\5\17\1\0\12\17\1\72\13\17"+
-    "\17\0\2\17\1\0\5\17\1\0\5\17\1\73\5\17"+
-    "\1\74\1\73\3\17\1\73\5\17\17\0\2\17\1\0"+
-    "\5\17\1\0\1\75\25\17\17\0\2\17\1\0\5\17"+
-    "\1\0\15\17\1\76\10\17\17\0\2\17\1\0\5\17"+
-    "\1\0\17\17\1\73\6\17\17\0\2\17\1\0\5\17"+
-    "\1\0\1\77\25\17\17\0\2\17\1\0\5\17\1\0"+
-    "\1\100\3\17\1\101\21\17\17\0\2\17\1\0\5\17"+
-    "\1\0\17\17\1\102\6\17\17\0\2\17\1\0\5\17"+
-    "\1\0\7\17\1\103\1\104\15\17\17\0\2\17\1\0"+
-    "\5\17\1\0\10\17\1\105\15\17\2\44\1\0\2\44"+
-    "\1\0\1\44\1\106\17\44\1\46\26\44\7\0\1\107"+
-    "\46\0\2\44\4\0\50\44\2\0\1\47\72\0\2\51"+
-    "\2\0\1\110\10\0\1\110\40\0\2\53\1\0\5\54"+
-    "\1\0\26\54\22\0\5\54\1\0\26\54\14\0\1\111"+
-    "\2\0\2\112\1\0\5\54\1\0\26\54\17\0\2\17"+
-    "\1\0\5\17\1\0\12\17\1\113\13\17\17\0\2\17"+
-    "\1\0\5\17\1\0\14\17\1\114\11\17\17\0\2\17"+
-    "\1\0\5\17\1\0\22\17\1\115\3\17\17\0\2\17"+
-    "\1\0\5\17\1\0\3\17\1\73\22\17\17\0\2\17"+
-    "\1\0\5\17\1\0\20\17\1\116\5\17\17\0\2\17"+
-    "\1\0\5\17\1\0\4\17\1\117\21\17\17\0\2\17"+
-    "\1\0\5\17\1\0\14\17\1\120\11\17\17\0\2\17"+
-    "\1\0\5\17\1\0\5\17\1\73\4\17\1\73\13\17"+
-    "\17\0\2\17\1\0\5\17\1\0\10\17\1\121\7\17"+
-    "\1\114\5\17\17\0\2\17\1\0\5\17\1\0\2\17"+
-    "\1\122\23\17\17\0\2\17\1\0\5\17\1\0\14\17"+
-    "\1\123\11\17\17\0\2\17\1\0\5\17\1\0\15\17"+
-    "\1\124\10\17\17\0\2\17\1\0\5\17\1\0\15\17"+
-    "\1\125\10\17\17\0\2\17\1\0\5\17\1\0\16\17"+
-    "\1\126\7\17\17\0\2\17\1\0\5\17\1\0\13\17"+
-    "\1\127\12\17\17\0\2\17\1\0\5\17\1\0\14\17"+
-    "\1\130\4\17\1\73\4\17\17\0\2\17\1\0\5\17"+
-    "\1\0\20\17\1\131\5\17\17\0\2\17\1\0\5\17"+
-    "\1\0\10\17\1\132\15\17\17\0\2\17\1\0\5\17"+
-    "\1\0\21\17\1\133\4\17\17\0\2\17\1\0\5\17"+
-    "\1\0\25\17\1\73\17\0\2\17\1\0\5\17\1\0"+
-    "\10\17\1\134\15\17\17\0\2\17\1\0\5\17\1\0"+
-    "\21\17\1\135\4\17\17\0\2\17\1\0\5\17\1\0"+
-    "\4\17\1\136\21\17\7\107\1\137\17\107\1\140\26\107"+
-    "\14\0\1\111\2\0\2\112\54\0\2\112\54\0\2\17"+
-    "\1\0\5\17\1\0\20\17\1\115\5\17\17\0\2\17"+
-    "\1\0\5\17\1\0\4\17\1\73\21\17\17\0\2\17"+
-    "\1\0\5\17\1\0\4\17\1\141\21\17\17\0\2\17"+
-    "\1\0\5\17\1\0\4\17\1\142\21\17\17\0\2\17"+
-    "\1\0\5\17\1\0\1\143\25\17\17\0\2\17\1\0"+
-    "\5\17\1\0\21\17\1\144\4\17\17\0\2\17\1\0"+
-    "\5\17\1\0\5\17\1\73\20\17\17\0\2\17\1\0"+
-    "\5\17\1\0\4\17\1\145\21\17\17\0\2\17\1\0"+
-    "\5\17\1\0\1\146\25\17\17\0\2\17\1\0\5\17"+
-    "\1\0\13\17\1\73\12\17\17\0\2\17\1\0\5\17"+
-    "\1\0\1\17\1\147\24\17\17\0\2\17\1\0\5\17"+
-    "\1\0\15\17\1\142\10\17\17\0\2\17\1\0\5\17"+
-    "\1\0\1\17\1\150\24\17\17\0\2\17\1\0\5\17"+
-    "\1\0\12\17\1\151\13\17\17\0\2\17\1\0\5\17"+
-    "\1\0\20\17\1\73\5\17\17\0\2\17\1\0\5\17"+
-    "\1\0\20\17\1\114\5\17\17\0\2\17\1\0\5\17"+
-    "\1\0\22\17\1\152\3\17\17\0\2\17\1\0\5\17"+
-    "\1\0\12\17\1\114\13\17\17\0\2\17\1\0\5\17"+
-    "\1\0\7\17\1\73\16\17\17\0\2\17\1\0\5\17"+
-    "\1\0\12\17\1\61\13\17\7\107\1\153\17\107\1\140"+
-    "\30\107\4\0\50\107\17\0\2\17\1\0\5\17\1\0"+
-    "\17\17\1\154\6\17\17\0\2\17\1\0\5\17\1\0"+
-    "\11\17\1\73\14\17\17\0\2\17\1\0\5\17\1\0"+
-    "\10\17\1\155\15\17\17\0\2\17\1\0\5\17\1\0"+
-    "\16\17\1\154\7\17\17\0\2\17\1\0\5\17\1\0"+
-    "\12\17\1\156\13\17\17\0\2\17\1\0\5\17\1\0"+
-    "\1\157\25\17\17\0\2\17\1\0\5\17\1\0\3\17"+
-    "\1\160\22\17\17\0\2\17\1\0\5\17\1\0\15\17"+
-    "\1\161\10\17\17\0\2\17\1\0\5\17\1\0\17\17"+
-    "\1\162\6\17\7\107\1\163\17\107\1\140\26\107\17\0"+
-    "\2\17\1\0\5\17\1\0\21\17\1\73\4\17\17\0"+
-    "\2\17\1\0\5\17\1\0\14\17\1\164\11\17\17\0"+
-    "\2\17\1\0\5\17\1\0\12\17\1\102\13\17\17\0"+
-    "\2\17\1\0\5\17\1\0\12\17\1\73\13\17\17\0"+
-    "\2\17\1\0\5\17\1\0\1\73\25\17\17\0\2\17"+
-    "\1\0\5\17\1\0\2\17\1\147\23\17\17\0\2\17"+
-    "\1\0\5\17\1\0\14\17\1\73\11\17\17\0\2\17"+
-    "\1\0\5\17\1\0\22\17\1\114\3\17";
+    "\1\2\1\3\1\4\1\2\1\3\1\5\1\6\1\7"+
+    "\1\10\1\11\1\12\1\13\1\14\1\15\1\16\1\17"+
+    "\1\20\1\21\1\22\1\23\1\2\1\24\1\25\1\23"+
+    "\1\26\2\23\1\27\3\23\41\0\1\3\34\0\2\30"+
+    "\1\0\2\30\1\0\1\31\15\30\1\32\12\30\2\7"+
+    "\1\33\2\7\1\34\31\7\17\0\2\35\33\0\1\36"+
+    "\1\0\2\37\2\0\1\40\1\0\12\40\15\0\1\36"+
+    "\1\0\2\20\2\0\1\40\1\0\12\40\17\0\2\23"+
+    "\2\0\1\23\1\0\12\23\17\0\2\23\2\0\1\23"+
+    "\1\0\1\23\1\41\10\23\17\0\2\23\2\0\1\23"+
+    "\1\0\4\23\1\42\5\23\17\0\2\23\2\0\1\23"+
+    "\1\0\2\23\1\43\7\23\17\0\2\23\2\0\1\23"+
+    "\1\0\1\23\1\44\10\23\2\30\4\0\31\30\2\0"+
+    "\1\33\53\0\2\37\2\0\1\40\1\0\12\40\23\0"+
+    "\1\40\1\0\12\40\17\0\2\23\2\0\1\23\1\0"+
+    "\2\23\1\45\7\23\17\0\2\23\2\0\1\23\1\0"+
+    "\7\23\1\46\2\23\17\0\2\23\2\0\1\23\1\0"+
+    "\10\23\1\47\1\23\17\0\2\23\2\0\1\23\1\0"+
+    "\1\23\1\50\10\23\17\0\2\23\2\0\1\23\1\0"+
+    "\11\23\1\51\17\0\2\23\2\0\1\23\1\0\6\23"+
+    "\1\52\3\23\17\0\2\23\2\0\1\23\1\0\5\23"+
+    "\1\53\4\23";
 
   private static int [] zzUnpacktrans() {
-    int [] result = new int[4830];
+    int [] result = new int[744];
     int offset = 0;
     offset = zzUnpacktrans(ZZ_TRANS_PACKED_0, offset, result);
     return result;
@@ -317,12 +225,11 @@ class PythonLexer {
   private static final int [] ZZ_ATTRIBUTE = zzUnpackAttribute();
 
   private static final String ZZ_ATTRIBUTE_PACKED_0 =
-    "\1\0\2\11\5\1\1\11\31\1\1\11\1\0\1\1"+
-    "\1\0\1\11\2\1\2\0\32\1\1\11\3\0\25\1"+
-    "\2\0\12\1\1\0\11\1";
+    "\1\0\3\11\3\1\5\11\1\1\1\11\2\1\2\11"+
+    "\5\1\1\0\1\11\1\0\1\11\2\1\2\0\14\1";
 
   private static int [] zzUnpackAttribute() {
-    int [] result = new int[116];
+    int [] result = new int[43];
     int offset = 0;
     offset = zzUnpackAttribute(ZZ_ATTRIBUTE_PACKED_0, offset, result);
     return result;
@@ -400,15 +307,17 @@ class PythonLexer {
   private boolean zzEOFDone;
 
   /* user code: */
-    private Token token(String type, String value, Color color) {
-        return new Token(type, value, yyline + 1, yycolumn + 1, color);
+    // Clase Token personalizada
+    private Symbol token(int symType, String tipo, Object valor, Color color) {
+        Token t = new Token(tipo, valor, yyline + 1, yycolumn + 1, color);
+        return new Symbol(symType, t);
     }
 
     private static final Color KEYWORD_COLOR = new Color(147, 199, 99);    // Green
     private static final Color OPERATOR_COLOR = new Color(103, 140, 177);  // Blue
     private static final Color STRING_COLOR = new Color(214, 157, 133);    // Orange
     private static final Color COMMENT_COLOR = new Color(128, 128, 128);   // Gray
-    private static final Color NUMBER_COLOR = new Color(104, 151, 187);    // Light Blue
+    private static final Color NUMBER_COLOR = new Color(122, 30, 183);     // Purple
     private static final Color DELIMITER_COLOR = new Color(103, 140, 177); // Blue
     private static final Color BOOLEAN_COLOR = new Color(147, 199, 99);    // Green
     private static final Color ERROR_COLOR = new Color(229, 84, 81);       // Red
@@ -684,7 +593,7 @@ class PythonLexer {
    * @return the next token.
    * @exception java.io.IOException if any I/O-Error occurs.
    */
-  public Token yylex() throws java.io.IOException
+  public Symbol yylex() throws java.io.IOException
   {
     int zzInput;
     int zzAction;
@@ -821,75 +730,117 @@ class PythonLexer {
 
       if (zzInput == YYEOF && zzStartRead == zzCurrentPos) {
         zzAtEOF = true;
-        return null;
+              {
+                return new Symbol(sym.EOF);
+              }
       }
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { return token("ERROR", "Invalid character: " + yytext(), ERROR_COLOR);
-            }
-          // fall through
-          case 14: break;
-          case 2:
-            { /* Ignorar espacios y saltos de línea */
-            }
-          // fall through
-          case 15: break;
-          case 3:
-            { return token("COMMENT", yytext(), COMMENT_COLOR);
-            }
-          // fall through
-          case 16: break;
-          case 4:
-            { return token("OPERATOR", yytext(), OPERATOR_COLOR);
-            }
-          // fall through
-          case 17: break;
-          case 5:
-            { return token("DELIMITER", yytext(), DELIMITER_COLOR);
-            }
-          // fall through
-          case 18: break;
-          case 6:
-            { return token("INTEGER", yytext(), NUMBER_COLOR);
-            }
-          // fall through
-          case 19: break;
-          case 7:
-            { return token("IDENTIFIER", yytext(), DEFAULT_COLOR);
-            }
-          // fall through
-          case 20: break;
-          case 8:
-            { return token("STRING", yytext(), STRING_COLOR);
-            }
-          // fall through
-          case 21: break;
-          case 9:
-            { return token("FLOAT", yytext(), NUMBER_COLOR);
+            { return token(sym.ERROR, "ERROR", "Invalid character: " + yytext(), ERROR_COLOR);
             }
           // fall through
           case 22: break;
-          case 10:
-            { return token("ERROR", "Invalid identifier: " + yytext(), ERROR_COLOR);
+          case 2:
+            { /* ignorar */
             }
           // fall through
           case 23: break;
-          case 11:
-            { return token("KEYWORD", yytext(), KEYWORD_COLOR);
+          case 3:
+            { return token(sym.NEWLINE, "DELIMITER", yytext(), DELIMITER_COLOR);
             }
           // fall through
           case 24: break;
-          case 12:
-            { return token("SCIENTIFIC", yytext(), NUMBER_COLOR);
+          case 4:
+            { return token(sym.COMMENT, "COMMENT", yytext(), COMMENT_COLOR);
             }
           // fall through
           case 25: break;
-          case 13:
-            { return token("BOOLEAN", yytext(), BOOLEAN_COLOR);
+          case 5:
+            { return token(sym.LPAREN, "DELIMITER", yytext(), DELIMITER_COLOR);
             }
           // fall through
           case 26: break;
+          case 6:
+            { return token(sym.RPAREN, "DELIMITER", yytext(), DELIMITER_COLOR);
+            }
+          // fall through
+          case 27: break;
+          case 7:
+            { return token(sym.MULT, "OPERATOR", yytext(), OPERATOR_COLOR);
+            }
+          // fall through
+          case 28: break;
+          case 8:
+            { return token(sym.PLUS, "OPERATOR", yytext(), OPERATOR_COLOR);
+            }
+          // fall through
+          case 29: break;
+          case 9:
+            { return token(sym.MINUS, "OPERATOR", yytext(), OPERATOR_COLOR);
+            }
+          // fall through
+          case 30: break;
+          case 10:
+            { return token(sym.DIV, "OPERATOR", yytext(), OPERATOR_COLOR);
+            }
+          // fall through
+          case 31: break;
+          case 11:
+            { return token(sym.NUM, "INTEGER", Integer.parseInt(yytext()), NUMBER_COLOR);
+            }
+          // fall through
+          case 32: break;
+          case 12:
+            { return token(sym.COLON, "DELIMITER", yytext(), DELIMITER_COLOR);
+            }
+          // fall through
+          case 33: break;
+          case 13:
+            { return token(sym.ASSIGN, "OPERATOR", yytext(), OPERATOR_COLOR);
+            }
+          // fall through
+          case 34: break;
+          case 14:
+            { return token(sym.ID, "IDENTIFIER", yytext(), DEFAULT_COLOR);
+            }
+          // fall through
+          case 35: break;
+          case 15:
+            { return token(sym.STRING, "STRING", yytext(), STRING_COLOR);
+            }
+          // fall through
+          case 36: break;
+          case 16:
+            { return token(sym.FLOAT, "FLOAT", Double.parseDouble(yytext()), NUMBER_COLOR);
+            }
+          // fall through
+          case 37: break;
+          case 17:
+            { return token(sym.ERROR, "ERROR", "Invalid identifier: " + yytext(), ERROR_COLOR);
+            }
+          // fall through
+          case 38: break;
+          case 18:
+            { return token(sym.IF, "KEYWORD", yytext(), KEYWORD_COLOR);
+            }
+          // fall through
+          case 39: break;
+          case 19:
+            { return token(sym.DEF, "KEYWORD", yytext(), KEYWORD_COLOR);
+            }
+          // fall through
+          case 40: break;
+          case 20:
+            { return token(sym.ELSE, "KEYWORD", yytext(), KEYWORD_COLOR);
+            }
+          // fall through
+          case 41: break;
+          case 21:
+            { return token(sym.RETURN, "KEYWORD", yytext(), KEYWORD_COLOR);
+            }
+          // fall through
+          case 42: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }
