@@ -208,28 +208,44 @@ public class Main {
             
             // STEP 2: Parsing
             try {
-                // Redirect System.out to capture parser output
-                System.setOut(new PrintStream(parserOutputStream));
-                System.setErr(new PrintStream(parserOutputStream));
+                // Create separate streams for stdout and stderr
+                ByteArrayOutputStream parserStdOut = new ByteArrayOutputStream();
+                ByteArrayOutputStream parserStdErr = new ByteArrayOutputStream();
+                
+                // Redirect output streams
+                System.setOut(new PrintStream(parserStdOut));
+                System.setErr(new PrintStream(parserStdErr));
                 
                 // Create a new lexer and parser
-//                PythonLexer lexer = new PythonLexer(new StringReader(input));
-//                Parser parser = new Parser(lexer);
-                // Modificar en Main.java
+                System.out.println("===== INICIANDO ANÁLISIS SINTÁCTICO =====");
                 PythonLexer lexer = new PythonLexer(new StringReader(input));
                 LexerAdapter lexerAdapter = new LexerAdapter(lexer);
                 Parser parser = new Parser(lexerAdapter);
                 
-                // Parse the input
-                parser.parse();
+                try {
+                    // Parse the input
+                    parser.parse();
+                    System.out.println("===== ANÁLISIS SINTÁCTICO COMPLETADO =====");
+                } catch (Exception e) {
+                    System.err.println("Parsing error: " + e.getMessage());
+                    System.err.println("===== ERROR EN ANÁLISIS SINTÁCTICO =====");
+                    e.printStackTrace(System.err);
+                }
                 
                 // Get the parser output
-                String parserOutput = parserOutputStream.toString();
-                parserOutputArea.setText(parserOutput);
+                String parserOutput = parserStdOut.toString();
+                String parserErrors = parserStdErr.toString();
+                
+                // Display output and errors
+                if (!parserErrors.isEmpty()) {
+                    parserOutputArea.setText(parserErrors + "\n\n" + parserOutput);
+                } else {
+                    parserOutputArea.setText(parserOutput);
+                }
                 
             } catch (Exception e) {
-                System.out.println("error aca *-*-*");
-                parserOutputArea.setText("Parsing error here: " + e.getMessage() + "\n\n" + parserOutputStream.toString());
+                parserOutputArea.setText("Error crítico en la configuración del parser: " + e.getMessage());
+                e.printStackTrace();
             } finally {
                 // Restore original output streams
                 System.setOut(originalOut);

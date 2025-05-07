@@ -12,3 +12,11 @@ def hello():
     print("Hello")
 
 
+
+a = 5
+b = 3.14
+c = a + b
+d = 1 + "a"
+x = 1 - "agg"
+e = 1 * "agg"
+t = 1 / "agg"
