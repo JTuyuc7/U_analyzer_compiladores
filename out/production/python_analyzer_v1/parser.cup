@@ -1,0 +1,87 @@
+import java.util.Map;
+import java.util.HashMap;
+parser code {:
+public static Map<String, String> tablaSimbolos = new HashMap<>();
+//  import java_cup.runtime.*;
+//  import java.util.*;
+//  import java.util.Map;
+  
+//  public class Parser {
+//    public static Map<String, String> tablaSimbolos = new HashMap<>();
+//  }
+:};
+
+/* Define how to connect to the scanner */
+init with {: /* init code if needed */ :};
+scan with {: return getScanner().next_token(); :};
+
+// ---------------------------------------------
+// TERMINALES: deben coincidir con tu .flex
+// ---------------------------------------------
+//terminal String ID;
+//terminal Integer NUM;
+//terminal Float FLOAT;
+//terminal String STRING, COMMENT;
+//terminal DEF, RETURN, COLON, NEWLINE, INDENT, DEDENT;
+//terminal PLUS, MINUS, MULT, DIV, ASSIGN;
+//terminal LPAREN, RPAREN;
+terminal Token ID, IF, ELSE, ERROR, NUM, FLOAT, STRING, COMMENT, DEF, RETURN, COLON, NEWLINE, INDENT, DEDENT, PLUS, MINUS, MULT, DIV, ASSIGN, LPAREN, RPAREN;
+
+
+// ---------------------------------------------
+// NO TERMINALES
+// ---------------------------------------------
+non terminal prog, stmt;
+non terminal Nodo expr;
+
+// ---------------------------------------------
+// PRECEDENCIAS
+// ---------------------------------------------
+precedence left PLUS, MINUS;
+precedence left MULT, DIV;
+
+// ---------------------------------------------
+// INICIO
+// ---------------------------------------------
+start with prog;
+
+// ---------------------------------------------
+// PRODUCCIONES
+// ---------------------------------------------
+
+prog ::= stmt NEWLINE
+       {:
+          System.out.println("✅ Análisis completado sin errores.");
+       :};
+
+stmt ::= ID:id ASSIGN expr:val
+       {:
+          Parser.tablaSimbolos.put(id.valor.toString(), val.tipo);
+          System.out.println("Asignación: " + id.valor + " = " + val.valor + " (tipo: " + val.tipo + ")");
+       :};
+
+expr ::= expr:izq PLUS expr:der
+      {:
+         if (!izq.tipo.equals(der.tipo)) {
+             System.err.println("❌ Error: tipos incompatibles en suma → " + izq.tipo + " + " + der.tipo);
+             System.exit(1);
+         }
+
+         RESULT = new Nodo(izq.tipo);
+      :};
+
+expr ::= NUM:num
+      {: RESULT = new Nodo("int", num.valor); :};
+
+expr ::= ID:id
+      {:
+         String nombre = id.valor.toString();
+         String tipo = Parser.tablaSimbolos.get(nombre);
+
+         if (tipo == null) {
+             System.err.println("❌ Error: variable '" + nombre + "' no está definida.");
+             System.exit(1);
+         }
+
+         RESULT = new Nodo(tipo, nombre);
+      :};

@@ -1,34 +1,33 @@
 import java.awt.Color;
-
 public class Token {
-    private final String type;
-    private final String value;
-    private final int line;
-    private final int column;
-    private final Color color;
+    public final String tipo;     // Ej: "KEYWORD", "OPERATOR", etc.
+    public final Object valor;    // Ej: "def", 5, "a"
+    public final int linea;
+    public final int columna;
+    public final java.awt.Color color;
 
-    public Token(String type, String value, int line, int column, Color color) {
-        this.type = type;
-        this.value = value;
-        this.line = line;
-        this.column = column;
+    public Token(String tipo, Object valor, int linea, int columna, Color color) {
+        this.tipo = tipo;
+        this.valor = valor;
+        this.linea = linea;
+        this.columna = columna;
         this.color = color;
     }
 
     public String getType() {
-        return type;
+        return tipo;
     }
 
     public String getValue() {
-        return value;
+        return valor.toString();
     }
 
     public int getLine() {
-        return line;
+        return linea;
     }
 
     public int getColumn() {
-        return column;
+        return columna;
     }
 
     public Color getColor() {
@@ -36,13 +35,10 @@ public class Token {
     }
 
     public boolean isError() {
-        return type.equals("ERROR");
+        return tipo.equals("ERROR");
     }
 
-    @Override
     public String toString() {
-        return String.format("Token{type='%s', value='%s', line=%d, column=%d, color=%s}", 
-            type, value, line, column, color);
+        return tipo + " → " + valor + " (" + linea + "," + columna + ")";
     }
-
 }

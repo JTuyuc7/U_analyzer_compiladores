@@ -1,0 +1,14 @@
+# Invalid character
+x = 10 $ 5
+
+# Invalid identifier
+5variable = 10
+
+# Unclosed string
+message = "This string is not closed
+
+# Valid tokens but invalid syntax for your parser
+def hello():
+    print("Hello")
+
+
