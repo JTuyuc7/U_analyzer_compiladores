@@ -6,53 +6,157 @@
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int ELSE = 4;
-  public static final int PLUS = 16;
-  public static final int RPAREN = 22;
-  public static final int RETURN = 11;
-  public static final int ERROR = 5;
-  public static final int DEDENT = 15;
-  public static final int IF = 3;
-  public static final int LPAREN = 21;
-  public static final int COLON = 12;
-  public static final int ID = 2;
-  public static final int NUM = 6;
-  public static final int STRING = 8;
-  public static final int FLOAT = 7;
-  public static final int MULT = 18;
+  public static final int AT = 68;
+  public static final int AS = 18;
+  public static final int FROM = 17;
+  public static final int GT = 43;
+  public static final int ARROW = 69;
+  public static final int BITNOT = 57;
+  public static final int NEWLINE = 70;
+  public static final int ASYNC = 29;
+  public static final int GE = 45;
+  public static final int NONLOCAL = 26;
+  public static final int SEMI = 67;
+  public static final int LAMBDA = 24;
+  public static final int PASS = 15;
+  public static final int INDENT = 71;
+  public static final int RBRACK = 61;
+  public static final int COMMA = 65;
+  public static final int DEDENT = 72;
+  public static final int RBRACE = 63;
+  public static final int ELIF = 9;
+  public static final int RPAREN = 59;
+  public static final int POW = 49;
+  public static final int LBRACK = 60;
+  public static final int LT = 42;
+  public static final int FLOORDIV = 50;
+  public static final int LBRACE = 62;
+  public static final int LPAREN = 58;
+  public static final int YIELD = 28;
+  public static final int FALSE = 32;
+  public static final int NOT = 48;
+  public static final int DEF = 6;
+  public static final int LE = 44;
+  public static final int ERROR = 74;
+  public static final int FLOAT = 4;
+  public static final int NUM = 3;
+  public static final int EQ = 40;
+  public static final int MOD = 53;
+  public static final int CLASS = 19;
+  public static final int EXCEPT = 21;
+  public static final int TRUE = 31;
+  public static final int PLUS = 35;
+  public static final int WHILE = 12;
+  public static final int ASSIGN = 39;
+  public static final int NONE = 33;
+  public static final int FOR = 11;
+  public static final int DIV = 38;
+  public static final int RETURN = 7;
+  public static final int MULT = 37;
+  public static final int RSH = 52;
+  public static final int BITOR = 55;
+  public static final int ELSE = 10;
+  public static final int TRY = 20;
+  public static final int BREAK = 13;
+  public static final int DOT = 66;
   public static final int EOF = 0;
-  public static final int DEF = 10;
-  public static final int DIV = 19;
-  public static final int COMMENT = 9;
-  public static final int MINUS = 17;
-  public static final int NEWLINE = 13;
+  public static final int COMMENT = 73;
+  public static final int AWAIT = 30;
+  public static final int IMPORT = 16;
+  public static final int MINUS = 36;
+  public static final int BITAND = 54;
+  public static final int OR = 47;
   public static final int error = 1;
-  public static final int ASSIGN = 20;
-  public static final int INDENT = 14;
+  public static final int LSH = 51;
+  public static final int FINALLY = 22;
+  public static final int CONTINUE = 14;
+  public static final int IF = 8;
+  public static final int BITXOR = 56;
+  public static final int ID = 2;
+  public static final int KEYWORD = 34;
+  public static final int COLON = 64;
+  public static final int ASSERT = 27;
+  public static final int GLOBAL = 25;
+  public static final int STRING = 5;
+  public static final int NEQ = 41;
+  public static final int AND = 46;
+  public static final int WITH = 23;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
   "ID",
-  "IF",
-  "ELSE",
-  "ERROR",
   "NUM",
   "FLOAT",
   "STRING",
-  "COMMENT",
   "DEF",
   "RETURN",
-  "COLON",
-  "NEWLINE",
-  "INDENT",
-  "DEDENT",
+  "IF",
+  "ELIF",
+  "ELSE",
+  "FOR",
+  "WHILE",
+  "BREAK",
+  "CONTINUE",
+  "PASS",
+  "IMPORT",
+  "FROM",
+  "AS",
+  "CLASS",
+  "TRY",
+  "EXCEPT",
+  "FINALLY",
+  "WITH",
+  "LAMBDA",
+  "GLOBAL",
+  "NONLOCAL",
+  "ASSERT",
+  "YIELD",
+  "ASYNC",
+  "AWAIT",
+  "TRUE",
+  "FALSE",
+  "NONE",
+  "KEYWORD",
   "PLUS",
   "MINUS",
   "MULT",
   "DIV",
   "ASSIGN",
+  "EQ",
+  "NEQ",
+  "LT",
+  "GT",
+  "LE",
+  "GE",
+  "AND",
+  "OR",
+  "NOT",
+  "POW",
+  "FLOORDIV",
+  "LSH",
+  "RSH",
+  "MOD",
+  "BITAND",
+  "BITOR",
+  "BITXOR",
+  "BITNOT",
   "LPAREN",
-  "RPAREN"
+  "RPAREN",
+  "LBRACK",
+  "RBRACK",
+  "LBRACE",
+  "RBRACE",
+  "COLON",
+  "COMMA",
+  "DOT",
+  "SEMI",
+  "AT",
+  "ARROW",
+  "NEWLINE",
+  "INDENT",
+  "DEDENT",
+  "COMMENT",
+  "ERROR"
   };
 }
 

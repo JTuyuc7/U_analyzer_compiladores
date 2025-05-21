@@ -6,6 +6,7 @@
 import java.util.Map;
 import java.util.HashMap;
 import java_cup.runtime.Symbol;
+import java_cup.runtime.Symbol;
 import java_cup.runtime.XMLElement;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
@@ -44,35 +45,35 @@ public class Parser extends java_cup.runtime.lr_parser {
   /** Parse-action table. */
   protected static final short[][] _action_table = 
     unpackFromStrings(new String[] {
-    "\000\033\000\006\003\005\004\004\001\002\000\004\026" +
-    "\014\001\002\000\006\002\ufffc\017\ufffc\001\002\000\006" +
-    "\002\ufffe\017\ufffe\001\002\000\004\002\013\001\002\000" +
-    "\006\002\000\017\011\001\002\000\006\003\005\004\004" +
-    "\001\002\000\006\002\uffff\017\uffff\001\002\000\004\002" +
-    "\001\001\002\000\016\003\020\004\016\010\015\011\023" +
-    "\012\017\027\021\001\002\000\020\002\ufff6\017\ufff6\022" +
-    "\ufff6\023\ufff6\024\ufff6\025\ufff6\030\ufff6\001\002\000\020" +
-    "\002\ufff3\017\ufff3\022\ufff3\023\ufff3\024\ufff3\025\ufff3\030" +
-    "\ufff3\001\002\000\020\002\ufff4\017\ufff4\022\ufff4\023\ufff4" +
-    "\024\ufff4\025\ufff4\030\ufff4\001\002\000\020\002\ufff2\017" +
-    "\ufff2\022\ufff2\023\ufff2\024\ufff2\025\ufff2\030\ufff2\001\002" +
-    "\000\016\003\020\004\016\010\015\011\023\012\017\027" +
-    "\021\001\002\000\016\002\ufffd\017\ufffd\022\025\023\026" +
-    "\024\024\025\027\001\002\000\020\002\ufff5\017\ufff5\022" +
-    "\ufff5\023\ufff5\024\ufff5\025\ufff5\030\ufff5\001\002\000\016" +
-    "\003\020\004\016\010\015\011\023\012\017\027\021\001" +
-    "\002\000\016\003\020\004\016\010\015\011\023\012\017" +
-    "\027\021\001\002\000\016\003\020\004\016\010\015\011" +
-    "\023\012\017\027\021\001\002\000\016\003\020\004\016" +
-    "\010\015\011\023\012\017\027\021\001\002\000\020\002" +
-    "\ufff8\017\ufff8\022\ufff8\023\ufff8\024\ufff8\025\ufff8\030\ufff8" +
-    "\001\002\000\020\002\ufffa\017\ufffa\022\ufffa\023\ufffa\024" +
-    "\024\025\027\030\ufffa\001\002\000\020\002\ufffb\017\ufffb" +
-    "\022\ufffb\023\ufffb\024\024\025\027\030\ufffb\001\002\000" +
-    "\020\002\ufff9\017\ufff9\022\ufff9\023\ufff9\024\ufff9\025\ufff9" +
-    "\030\ufff9\001\002\000\014\022\025\023\026\024\024\025" +
-    "\027\030\035\001\002\000\020\002\ufff7\017\ufff7\022\ufff7" +
-    "\023\ufff7\024\ufff7\025\ufff7\030\ufff7\001\002" });
+    "\000\033\000\006\003\005\004\004\001\002\000\004\051" +
+    "\014\001\002\000\006\002\ufffc\110\ufffc\001\002\000\006" +
+    "\002\ufffe\110\ufffe\001\002\000\004\002\013\001\002\000" +
+    "\006\002\000\110\011\001\002\000\006\003\005\004\004" +
+    "\001\002\000\006\002\uffff\110\uffff\001\002\000\004\002" +
+    "\001\001\002\000\016\003\020\004\016\005\015\006\023" +
+    "\007\017\074\021\001\002\000\020\002\ufff6\045\ufff6\046" +
+    "\ufff6\047\ufff6\050\ufff6\075\ufff6\110\ufff6\001\002\000\020" +
+    "\002\ufff3\045\ufff3\046\ufff3\047\ufff3\050\ufff3\075\ufff3\110" +
+    "\ufff3\001\002\000\020\002\ufff4\045\ufff4\046\ufff4\047\ufff4" +
+    "\050\ufff4\075\ufff4\110\ufff4\001\002\000\020\002\ufff2\045" +
+    "\ufff2\046\ufff2\047\ufff2\050\ufff2\075\ufff2\110\ufff2\001\002" +
+    "\000\016\003\020\004\016\005\015\006\023\007\017\074" +
+    "\021\001\002\000\016\002\ufffd\045\025\046\026\047\024" +
+    "\050\027\110\ufffd\001\002\000\020\002\ufff5\045\ufff5\046" +
+    "\ufff5\047\ufff5\050\ufff5\075\ufff5\110\ufff5\001\002\000\016" +
+    "\003\020\004\016\005\015\006\023\007\017\074\021\001" +
+    "\002\000\016\003\020\004\016\005\015\006\023\007\017" +
+    "\074\021\001\002\000\016\003\020\004\016\005\015\006" +
+    "\023\007\017\074\021\001\002\000\016\003\020\004\016" +
+    "\005\015\006\023\007\017\074\021\001\002\000\020\002" +
+    "\ufff8\045\ufff8\046\ufff8\047\ufff8\050\ufff8\075\ufff8\110\ufff8" +
+    "\001\002\000\020\002\ufffa\045\ufffa\046\ufffa\047\024\050" +
+    "\027\075\ufffa\110\ufffa\001\002\000\020\002\ufffb\045\ufffb" +
+    "\046\ufffb\047\024\050\027\075\ufffb\110\ufffb\001\002\000" +
+    "\020\002\ufff9\045\ufff9\046\ufff9\047\ufff9\050\ufff9\075\ufff9" +
+    "\110\ufff9\001\002\000\014\045\025\046\026\047\024\050" +
+    "\027\075\035\001\002\000\020\002\ufff7\045\ufff7\046\ufff7" +
+    "\047\ufff7\050\ufff7\075\ufff7\110\ufff7\001\002" });
 
   /** Access to parse-action table. */
   public short[][] action_table() {return _action_table;}
@@ -143,23 +144,21 @@ public class Parser extends java_cup.runtime.lr_parser {
 
 
     public static Map<String, String> tablaSimbolos = new HashMap<>();
-    // Variable para seguir si hay errores de tipo
     public static boolean tieneErroresTipo = false;
-    
+
     public void syntax_error(Symbol cur_token) {
-        System.err.println("Error de sintaxis en línea: " + 
-            (cur_token.value instanceof Token ? ((Token)cur_token.value).linea : "desconocida") + 
-            ", columna: " + 
+        System.err.println("Error de sintaxis en línea: " +
+            (cur_token.value instanceof Token ? ((Token)cur_token.value).linea : "desconocida") +
+            ", columna: " +
             (cur_token.value instanceof Token ? ((Token)cur_token.value).columna : "desconocida") +
-            ". Token inesperado: " + 
+            ". Token inesperado: " +
             (cur_token.value instanceof Token ? ((Token)cur_token.value).valor : cur_token.value));
     }
-    
+
     public void report_error(String message, Object info) {
         System.err.println("Error: " + message);
     }
-    
-    // Resetear el estado antes de cada análisis
+
     public static void reset() {
         tablaSimbolos.clear();
         tieneErroresTipo = false;
@@ -254,7 +253,7 @@ class CUP$Parser$actions {
 		
           Parser.tablaSimbolos.put(id.valor.toString(), val.tipo);
           System.out.println("Asignación: " + id.valor + " = " + val.valor + " (tipo: " + val.tipo + ")");
-          
+
           // Si hay un error en la expresión, reportarlo
           if (val.tipo.equals("error")) {
               System.err.println("❌ Error de tipo en la asignación a '" + id.valor + "'");
@@ -287,9 +286,9 @@ class CUP$Parser$actions {
 		int derright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Nodo der = (Nodo)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-         System.out.println("DEBUG: Operación SUMA: " + izq.valor + " + " + der.valor);
-         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
-         
+//         System.out.println("DEBUG: Operación SUMA: " + izq.valor + " + " + der.valor);
+//         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
+
          // Verifica si alguno de los operandos ya tiene un error
          if (izq.tipo.equals("error") || der.tipo.equals("error")) {
              RESULT = new Nodo("error", izq.valor + "+" + der.valor);
@@ -301,7 +300,7 @@ class CUP$Parser$actions {
              System.err.println("❌ Error: operando izquierdo de suma debe ser numérico, es " + izq.tipo);
              RESULT = new Nodo("error", izq.valor + "+" + der.valor);
              Parser.tieneErroresTipo = true;
-         } 
+         }
          else if (!der.tipo.equals("int") && !der.tipo.equals("float")) {
              System.err.println("❌ Error: operando derecho de suma debe ser numérico, es " + der.tipo);
              RESULT = new Nodo("error", izq.valor + "+" + der.valor);
@@ -311,7 +310,7 @@ class CUP$Parser$actions {
          else if (!izq.tipo.equals(der.tipo)) {
              System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
              RESULT = new Nodo("float", izq.valor + "+" + der.valor);
-         } 
+         }
          // Si ambos son del mismo tipo numérico, mantener ese tipo
          else {
              RESULT = new Nodo(izq.tipo, izq.valor + "+" + der.valor);
@@ -332,9 +331,9 @@ class CUP$Parser$actions {
 		int derright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Nodo der = (Nodo)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-         System.out.println("DEBUG: Operación RESTA: " + izq.valor + " - " + der.valor);
-         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
-         
+//         System.out.println("DEBUG: Operación RESTA: " + izq.valor + " - " + der.valor);
+//         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
+
          // Verifica si alguno de los operandos ya tiene un error
          if (izq.tipo.equals("error") || der.tipo.equals("error")) {
              RESULT = new Nodo("error", izq.valor + "-" + der.valor);
@@ -346,7 +345,7 @@ class CUP$Parser$actions {
              System.err.println("❌ Error: operando izquierdo de resta debe ser numérico, es " + izq.tipo);
              RESULT = new Nodo("error", izq.valor + "-" + der.valor);
              Parser.tieneErroresTipo = true;
-         } 
+         }
          else if (!der.tipo.equals("int") && !der.tipo.equals("float")) {
              System.err.println("❌ Error: operando derecho de resta debe ser numérico, es " + der.tipo);
              RESULT = new Nodo("error", izq.valor + "-" + der.valor);
@@ -354,9 +353,9 @@ class CUP$Parser$actions {
          }
          // Si ambos son numéricos pero de diferente tipo, aplicar conversión implícita
          else if (!izq.tipo.equals(der.tipo)) {
-             System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
+//             System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
              RESULT = new Nodo("float", izq.valor + "-" + der.valor);
-         } 
+         }
          // Si ambos son del mismo tipo numérico, mantener ese tipo
          else {
              RESULT = new Nodo(izq.tipo, izq.valor + "-" + der.valor);
@@ -377,9 +376,9 @@ class CUP$Parser$actions {
 		int derright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Nodo der = (Nodo)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-         System.out.println("DEBUG: Operación MULTIPLICACIÓN: " + izq.valor + " * " + der.valor);
-         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
-         
+//         System.out.println("DEBUG: Operación MULTIPLICACIÓN: " + izq.valor + " * " + der.valor);
+//         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
+
          // Verifica si alguno de los operandos ya tiene un error
          if (izq.tipo.equals("error") || der.tipo.equals("error")) {
              RESULT = new Nodo("error", izq.valor + "*" + der.valor);
@@ -391,7 +390,7 @@ class CUP$Parser$actions {
              System.err.println("❌ Error: operando izquierdo de multiplicación debe ser numérico, es " + izq.tipo);
              RESULT = new Nodo("error", izq.valor + "*" + der.valor);
              Parser.tieneErroresTipo = true;
-         } 
+         }
          else if (!der.tipo.equals("int") && !der.tipo.equals("float")) {
              System.err.println("❌ Error: operando derecho de multiplicación debe ser numérico, es " + der.tipo);
              RESULT = new Nodo("error", izq.valor + "*" + der.valor);
@@ -399,9 +398,9 @@ class CUP$Parser$actions {
          }
          // Si ambos son numéricos pero de diferente tipo, aplicar conversión implícita
          else if (!izq.tipo.equals(der.tipo)) {
-             System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
+//             System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
              RESULT = new Nodo("float", izq.valor + "*" + der.valor);
-         } 
+         }
          // Si ambos son del mismo tipo numérico, mantener ese tipo
          else {
              RESULT = new Nodo(izq.tipo, izq.valor + "*" + der.valor);
@@ -422,9 +421,9 @@ class CUP$Parser$actions {
 		int derright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Nodo der = (Nodo)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
 		
-         System.out.println("DEBUG: Operación DIVISIÓN: " + izq.valor + " / " + der.valor);
-         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
-         
+//         System.out.println("DEBUG: Operación DIVISIÓN: " + izq.valor + " / " + der.valor);
+//         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
+
          // Verifica si alguno de los operandos ya tiene un error
          if (izq.tipo.equals("error") || der.tipo.equals("error")) {
              RESULT = new Nodo("error", izq.valor + "/" + der.valor);
@@ -436,7 +435,7 @@ class CUP$Parser$actions {
              System.err.println("❌ Error: operando izquierdo de división debe ser numérico, es " + izq.tipo);
              RESULT = new Nodo("error", izq.valor + "/" + der.valor);
              Parser.tieneErroresTipo = true;
-         } 
+         }
          else if (!der.tipo.equals("int") && !der.tipo.equals("float")) {
              System.err.println("❌ Error: operando derecho de división debe ser numérico, es " + der.tipo);
              RESULT = new Nodo("error", izq.valor + "/" + der.valor);
@@ -444,9 +443,9 @@ class CUP$Parser$actions {
          }
          // Si ambos son numéricos pero de diferente tipo, aplicar conversión implícita
          else if (!izq.tipo.equals(der.tipo)) {
-             System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
+//             System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
              RESULT = new Nodo("float", izq.valor + "/" + der.valor);
-         } 
+         }
          // Si ambos son del mismo tipo numérico, siempre retornar float (división en Python)
          else {
              RESULT = new Nodo("float", izq.valor + "/" + der.valor);
@@ -464,7 +463,7 @@ class CUP$Parser$actions {
 		int eright = ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-1)).right;
 		Nodo e = (Nodo)((java_cup.runtime.Symbol) CUP$Parser$stack.elementAt(CUP$Parser$top-1)).value;
 		
-          System.out.println("DEBUG: Expresión entre paréntesis: (" + e.valor + ")");
+//          System.out.println("DEBUG: Expresión entre paréntesis: (" + e.valor + ")");
           RESULT = e;
       
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("expr",3, ((java_cup.runtime.Symbol)CUP$Parser$stack.elementAt(CUP$Parser$top-2)), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
@@ -478,9 +477,9 @@ class CUP$Parser$actions {
 		int numleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int numright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Token num = (Token)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 
-         System.out.println("DEBUG: Número entero: " + num.valor);
-         RESULT = new Nodo("int", num.valor); 
+		
+//         System.out.println("DEBUG: Número entero: " + num.valor);
+         RESULT = new Nodo("int", num.valor);
       
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("expr",3, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -493,9 +492,9 @@ class CUP$Parser$actions {
 		int fltleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int fltright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Token flt = (Token)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 
-         System.out.println("DEBUG: Número flotante: " + flt.valor);
-         RESULT = new Nodo("float", flt.valor); 
+		
+//         System.out.println("DEBUG: Número flotante: " + flt.valor);
+         RESULT = new Nodo("float", flt.valor);
       
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("expr",3, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -508,9 +507,9 @@ class CUP$Parser$actions {
 		int strleft = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).left;
 		int strright = ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()).right;
 		Token str = (Token)((java_cup.runtime.Symbol) CUP$Parser$stack.peek()).value;
-		 
-         System.out.println("DEBUG: String: " + str.valor);
-         RESULT = new Nodo("string", str.valor); 
+		
+//         System.out.println("DEBUG: String: " + str.valor);
+         RESULT = new Nodo("string", str.valor);
       
               CUP$Parser$result = parser.getSymbolFactory().newSymbol("expr",3, ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), ((java_cup.runtime.Symbol)CUP$Parser$stack.peek()), RESULT);
             }
@@ -526,7 +525,7 @@ class CUP$Parser$actions {
 		
          String nombre = id.valor.toString();
          String tipo = Parser.tablaSimbolos.get(nombre);
-         System.out.println("DEBUG: Variable: " + nombre + " de tipo: " + (tipo != null ? tipo : "no definido"));
+//         System.out.println("DEBUG: Variable: " + nombre + " de tipo: " + (tipo != null ? tipo : "no definido"));
 
          if (tipo == null) {
              System.err.println("❌ Error: variable '" + nombre + "' no está definida.");

@@ -1,60 +1,61 @@
 import java.util.Map;
 import java.util.HashMap;
 import java_cup.runtime.Symbol;
+import java_cup.runtime.Symbol;
 parser code {:
     public static Map<String, String> tablaSimbolos = new HashMap<>();
-    // Variable para seguir si hay errores de tipo
     public static boolean tieneErroresTipo = false;
-    
+
     public void syntax_error(Symbol cur_token) {
-        System.err.println("Error de sintaxis en línea: " + 
-            (cur_token.value instanceof Token ? ((Token)cur_token.value).linea : "desconocida") + 
-            ", columna: " + 
+        System.err.println("Error de sintaxis en línea: " +
+            (cur_token.value instanceof Token ? ((Token)cur_token.value).linea : "desconocida") +
+            ", columna: " +
             (cur_token.value instanceof Token ? ((Token)cur_token.value).columna : "desconocida") +
-            ". Token inesperado: " + 
+            ". Token inesperado: " +
             (cur_token.value instanceof Token ? ((Token)cur_token.value).valor : cur_token.value));
     }
-    
+
     public void report_error(String message, Object info) {
         System.err.println("Error: " + message);
     }
-    
-    // Resetear el estado antes de cada análisis
+
     public static void reset() {
         tablaSimbolos.clear();
         tieneErroresTipo = false;
     }
 :};
 
-/* Define how to connect to the scanner */
 init with {: Parser.reset(); :};
 scan with {: return getScanner().next_token(); :};
 
 // ---------------------------------------------
-// TERMINALES: deben coincidir con tu .flex
+// TERMINALES: definir todos los tokens lexicos
 // ---------------------------------------------
-terminal Token ID,
-IF,
-ELSE,
-ERROR,
-NUM,
-FLOAT,
-STRING,
-COMMENT,
-DEF,
-RETURN,
-COLON,
-NEWLINE,
-INDENT,
-DEDENT,
-PLUS,
-MINUS,
-MULT,
-DIV,
-ASSIGN,
-LPAREN,
-RPAREN;
-
+terminal Token
+    // Identificadores y literales
+    ID,
+    NUM, FLOAT, STRING,
+    // Estructura
+    DEF, RETURN, IF, ELIF, ELSE, FOR, WHILE, BREAK, CONTINUE,
+    PASS, IMPORT, FROM, AS, CLASS, TRY, EXCEPT, FINALLY,
+    WITH, LAMBDA, GLOBAL, NONLOCAL, ASSERT, YIELD,
+    ASYNC, AWAIT,
+    // Literales especiales
+    TRUE, FALSE, NONE,
+    // Generic keyword token (from lexer)
+    KEYWORD,
+    // Operadores
+    PLUS, MINUS, MULT, DIV, ASSIGN,
+    EQ, NEQ, LT, GT, LE, GE,
+    AND, OR, NOT,
+    POW, FLOORDIV, LSH, RSH, MOD, BITAND, BITOR, BITXOR, BITNOT,
+    // Delimitadores
+    LPAREN, RPAREN, LBRACK, RBRACK, LBRACE, RBRACE,
+    COLON, COMMA, DOT, SEMI, AT, ARROW,
+    // Control de indentacion
+    NEWLINE, INDENT, DEDENT,
+    // Comentarios y errores
+    COMMENT, ERROR;
 
 // ---------------------------------------------
 // NO TERMINALES
@@ -63,10 +64,16 @@ non terminal prog, stmt_list, stmt;
 non terminal Nodo expr;
 
 // ---------------------------------------------
-// PRECEDENCIAS
+// PRECEDENCIAS (oprelacionales/modo python)
 // ---------------------------------------------
+precedence left OR;
+precedence left AND;
+precedence left NOT;
+precedence left EQ, NEQ;
+precedence left LT, GT, LE, GE;
 precedence left PLUS, MINUS;
-precedence left MULT, DIV;
+precedence left MULT, DIV, FLOORDIV, MOD;
+precedence left POW;
 
 // ---------------------------------------------
 // INICIO
@@ -99,7 +106,7 @@ stmt ::= ID:id ASSIGN expr:val
        {:
           Parser.tablaSimbolos.put(id.valor.toString(), val.tipo);
           System.out.println("Asignación: " + id.valor + " = " + val.valor + " (tipo: " + val.tipo + ")");
-          
+
           // Si hay un error en la expresión, reportarlo
           if (val.tipo.equals("error")) {
               System.err.println("❌ Error de tipo en la asignación a '" + id.valor + "'");
@@ -113,9 +120,9 @@ stmt ::= ID:id ASSIGN expr:val
 
 expr ::= expr:izq PLUS expr:der
       {:
-         System.out.println("DEBUG: Operación SUMA: " + izq.valor + " + " + der.valor);
-         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
-         
+//         System.out.println("DEBUG: Operación SUMA: " + izq.valor + " + " + der.valor);
+//         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
+
          // Verifica si alguno de los operandos ya tiene un error
          if (izq.tipo.equals("error") || der.tipo.equals("error")) {
              RESULT = new Nodo("error", izq.valor + "+" + der.valor);
@@ -127,7 +134,7 @@ expr ::= expr:izq PLUS expr:der
              System.err.println("❌ Error: operando izquierdo de suma debe ser numérico, es " + izq.tipo);
              RESULT = new Nodo("error", izq.valor + "+" + der.valor);
              Parser.tieneErroresTipo = true;
-         } 
+         }
          else if (!der.tipo.equals("int") && !der.tipo.equals("float")) {
              System.err.println("❌ Error: operando derecho de suma debe ser numérico, es " + der.tipo);
              RESULT = new Nodo("error", izq.valor + "+" + der.valor);
@@ -137,7 +144,7 @@ expr ::= expr:izq PLUS expr:der
          else if (!izq.tipo.equals(der.tipo)) {
              System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
              RESULT = new Nodo("float", izq.valor + "+" + der.valor);
-         } 
+         }
          // Si ambos son del mismo tipo numérico, mantener ese tipo
          else {
              RESULT = new Nodo(izq.tipo, izq.valor + "+" + der.valor);
@@ -145,9 +152,9 @@ expr ::= expr:izq PLUS expr:der
       :}
       | expr:izq MINUS expr:der
       {:
-         System.out.println("DEBUG: Operación RESTA: " + izq.valor + " - " + der.valor);
-         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
-         
+//         System.out.println("DEBUG: Operación RESTA: " + izq.valor + " - " + der.valor);
+//         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
+
          // Verifica si alguno de los operandos ya tiene un error
          if (izq.tipo.equals("error") || der.tipo.equals("error")) {
              RESULT = new Nodo("error", izq.valor + "-" + der.valor);
@@ -159,7 +166,7 @@ expr ::= expr:izq PLUS expr:der
              System.err.println("❌ Error: operando izquierdo de resta debe ser numérico, es " + izq.tipo);
              RESULT = new Nodo("error", izq.valor + "-" + der.valor);
              Parser.tieneErroresTipo = true;
-         } 
+         }
          else if (!der.tipo.equals("int") && !der.tipo.equals("float")) {
              System.err.println("❌ Error: operando derecho de resta debe ser numérico, es " + der.tipo);
              RESULT = new Nodo("error", izq.valor + "-" + der.valor);
@@ -167,9 +174,9 @@ expr ::= expr:izq PLUS expr:der
          }
          // Si ambos son numéricos pero de diferente tipo, aplicar conversión implícita
          else if (!izq.tipo.equals(der.tipo)) {
-             System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
+//             System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
              RESULT = new Nodo("float", izq.valor + "-" + der.valor);
-         } 
+         }
          // Si ambos son del mismo tipo numérico, mantener ese tipo
          else {
              RESULT = new Nodo(izq.tipo, izq.valor + "-" + der.valor);
@@ -177,9 +184,9 @@ expr ::= expr:izq PLUS expr:der
       :}
       | expr:izq MULT expr:der
       {:
-         System.out.println("DEBUG: Operación MULTIPLICACIÓN: " + izq.valor + " * " + der.valor);
-         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
-         
+//         System.out.println("DEBUG: Operación MULTIPLICACIÓN: " + izq.valor + " * " + der.valor);
+//         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
+
          // Verifica si alguno de los operandos ya tiene un error
          if (izq.tipo.equals("error") || der.tipo.equals("error")) {
              RESULT = new Nodo("error", izq.valor + "*" + der.valor);
@@ -191,7 +198,7 @@ expr ::= expr:izq PLUS expr:der
              System.err.println("❌ Error: operando izquierdo de multiplicación debe ser numérico, es " + izq.tipo);
              RESULT = new Nodo("error", izq.valor + "*" + der.valor);
              Parser.tieneErroresTipo = true;
-         } 
+         }
          else if (!der.tipo.equals("int") && !der.tipo.equals("float")) {
              System.err.println("❌ Error: operando derecho de multiplicación debe ser numérico, es " + der.tipo);
              RESULT = new Nodo("error", izq.valor + "*" + der.valor);
@@ -199,9 +206,9 @@ expr ::= expr:izq PLUS expr:der
          }
          // Si ambos son numéricos pero de diferente tipo, aplicar conversión implícita
          else if (!izq.tipo.equals(der.tipo)) {
-             System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
+//             System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
              RESULT = new Nodo("float", izq.valor + "*" + der.valor);
-         } 
+         }
          // Si ambos son del mismo tipo numérico, mantener ese tipo
          else {
              RESULT = new Nodo(izq.tipo, izq.valor + "*" + der.valor);
@@ -209,9 +216,9 @@ expr ::= expr:izq PLUS expr:der
       :}
       | expr:izq DIV expr:der
       {:
-         System.out.println("DEBUG: Operación DIVISIÓN: " + izq.valor + " / " + der.valor);
-         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
-         
+//         System.out.println("DEBUG: Operación DIVISIÓN: " + izq.valor + " / " + der.valor);
+//         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
+
          // Verifica si alguno de los operandos ya tiene un error
          if (izq.tipo.equals("error") || der.tipo.equals("error")) {
              RESULT = new Nodo("error", izq.valor + "/" + der.valor);
@@ -223,7 +230,7 @@ expr ::= expr:izq PLUS expr:der
              System.err.println("❌ Error: operando izquierdo de división debe ser numérico, es " + izq.tipo);
              RESULT = new Nodo("error", izq.valor + "/" + der.valor);
              Parser.tieneErroresTipo = true;
-         } 
+         }
          else if (!der.tipo.equals("int") && !der.tipo.equals("float")) {
              System.err.println("❌ Error: operando derecho de división debe ser numérico, es " + der.tipo);
              RESULT = new Nodo("error", izq.valor + "/" + der.valor);
@@ -231,9 +238,9 @@ expr ::= expr:izq PLUS expr:der
          }
          // Si ambos son numéricos pero de diferente tipo, aplicar conversión implícita
          else if (!izq.tipo.equals(der.tipo)) {
-             System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
+//             System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
              RESULT = new Nodo("float", izq.valor + "/" + der.valor);
-         } 
+         }
          // Si ambos son del mismo tipo numérico, siempre retornar float (división en Python)
          else {
              RESULT = new Nodo("float", izq.valor + "/" + der.valor);
@@ -241,29 +248,29 @@ expr ::= expr:izq PLUS expr:der
       :}
       | LPAREN expr:e RPAREN
       {:
-          System.out.println("DEBUG: Expresión entre paréntesis: (" + e.valor + ")");
+//          System.out.println("DEBUG: Expresión entre paréntesis: (" + e.valor + ")");
           RESULT = e;
       :}
       | NUM:num
-      {: 
-         System.out.println("DEBUG: Número entero: " + num.valor);
-         RESULT = new Nodo("int", num.valor); 
+      {:
+//         System.out.println("DEBUG: Número entero: " + num.valor);
+         RESULT = new Nodo("int", num.valor);
       :}
       | FLOAT:flt
-      {: 
-         System.out.println("DEBUG: Número flotante: " + flt.valor);
-         RESULT = new Nodo("float", flt.valor); 
+      {:
+//         System.out.println("DEBUG: Número flotante: " + flt.valor);
+         RESULT = new Nodo("float", flt.valor);
       :}
       | STRING:str
-      {: 
-         System.out.println("DEBUG: String: " + str.valor);
-         RESULT = new Nodo("string", str.valor); 
+      {:
+//         System.out.println("DEBUG: String: " + str.valor);
+         RESULT = new Nodo("string", str.valor);
       :}
       | ID:id
       {:
          String nombre = id.valor.toString();
          String tipo = Parser.tablaSimbolos.get(nombre);
-         System.out.println("DEBUG: Variable: " + nombre + " de tipo: " + (tipo != null ? tipo : "no definido"));
+//         System.out.println("DEBUG: Variable: " + nombre + " de tipo: " + (tipo != null ? tipo : "no definido"));
 
          if (tipo == null) {
              System.err.println("❌ Error: variable '" + nombre + "' no está definida.");

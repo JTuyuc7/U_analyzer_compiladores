@@ -30,12 +30,12 @@ public class LexerAdapter implements Scanner {
                         currentSymbol.value.toString()) : 
                     "null";
                 
-                System.out.println("DEBUG TOKEN: " + tokenName + " - Value: " + tokenValue);
+//                System.out.println("DEBUG TOKEN: " + tokenName + " - Value: " + tokenValue);
             }
             
             // Si llegamos al final, enviamos EOF
             if (currentSymbol == null || currentSymbol.value == null) {
-                if (debugMode) System.out.println("DEBUG: Returning EOF token");
+//                if (debugMode) System.out.println("DEBUG: Returning EOF token");
                 return new Symbol(sym.EOF);
             }
             
