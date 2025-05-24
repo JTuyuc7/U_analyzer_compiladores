@@ -1,3 +1,29 @@
+/*
+ * ===============================================================================
+ * ANALIZADOR DE PYTHON - IMPLEMENTACIÓN DE LAS FASES DE UN COMPILADOR
+ * ===============================================================================
+ * 
+ * Este proyecto implementa las tres fases principales de un compilador:
+ * 
+ * 1. ANÁLISIS LÉXICO (Lexical Analysis):
+ *    - Convierte el código fuente en tokens
+ *    - Identifica palabras clave, operadores, identificadores, literales, etc.
+ *    - Implementado en: PythonLexer.flex, Token.java
+ * 
+ * 2. ANÁLISIS SINTÁCTICO (Syntax Analysis / Parsing):
+ *    - Verifica que los tokens sigan la gramática del lenguaje
+ *    - Construye un árbol sintáctico abstracto (AST)
+ *    - Implementado en: parser.cup, Parser.java, LexerAdapter.java
+ * 
+ * 3. ANÁLISIS SEMÁNTICO (Semantic Analysis):
+ *    - Verifica la consistencia de tipos
+ *    - Maneja tabla de símbolos
+ *    - Detecta errores semánticos
+ *    - Implementado en: parser.cup (acciones semánticas), Nodo.java
+ * 
+ * ===============================================================================
+ */
+
 import javax.swing.*;
 import javax.swing.text.*;
 import java.awt.*;
@@ -9,6 +35,13 @@ import java.util.List;
 import java_cup.runtime.Scanner;
 import java_cup.runtime.Symbol;
 
+/*
+ * CLASE PRINCIPAL - INTERFAZ GRÁFICA Y COORDINADOR DE LAS FASES DEL COMPILADOR
+ * 
+ * Esta clase actúa como el punto de entrada principal y coordinador de todas
+ * las fases del compilador. Proporciona una interfaz gráfica para visualizar
+ * los resultados de cada fase.
+ */
 public class Main {
     private static JTextArea inputArea;
     private static JTextPane outputPane;
@@ -160,25 +193,49 @@ public class Main {
                 e.printStackTrace();
                 return;
             }
-            
-            // STEP 1: Lexical Analysis
+              // ===================================================================
+            // FASE 1: ANÁLISIS LÉXICO (LEXICAL ANALYSIS)
+            // ===================================================================
+            // 
+            // OBJETIVO: Convertir el código fuente en una secuencia de tokens
+            // 
+            // PROCESO:
+            // 1. Lee el código carácter por carácter
+            // 2. Agrupa caracteres en unidades léxicas (tokens)
+            // 3. Clasifica cada token (palabra clave, operador, identificador, etc.)
+            // 4. Asigna colores para resaltado de sintaxis
+            // 5. Detecta errores léxicos (caracteres inválidos, identificadores mal formados)
+            //
+            // ENTRADA: Código fuente como cadena de caracteres
+            // SALIDA: Secuencia de tokens con sus atributos (tipo, valor, posición, color)
+            // ===================================================================
             try {
-                // Process all tokens and highlight
+                System.out.println("=== INICIANDO ANÁLISIS LÉXICO ===");
+                
+                // Estructuras para almacenar resultados del análisis léxico
                 StringBuilder tokenInfo = new StringBuilder();
                 StringBuilder errors = new StringBuilder();
                 
-                // First pass: collect tokens for display and highlighting
+                // CREACIÓN DEL ANALIZADOR LÉXICO
+                // El lexer es generado por JFlex a partir de PythonLexer.flex
                 PythonLexer lexer = new PythonLexer(new StringReader(input));
                 Symbol symbol;
+                
+                // PROCESO DE TOKENIZACIÓN
+                // Iteramos sobre todo el código fuente para extraer tokens
                 while (true) {
-                    symbol = lexer.yylex();
+                    symbol = lexer.yylex(); // Obtiene el siguiente token
                     if (symbol == null || symbol.value == null) break;
                     
                     if (symbol.value instanceof Token) {
                         Token token = (Token) symbol.value;
+                        
+                        // RECOLECCIÓN DE INFORMACIÓN DE TOKENS
+                        // Formatea la información del token para mostrar al usuario
                         tokenInfo.append(formatTokenInfo(token, symbol.sym));
                         
-                        // Apply highlighting to the document
+                        // RESALTADO DE SINTAXIS
+                        // Aplica colores basados en el tipo de token
                         try {
                             int startOffset = getOffsetForLineAndColumn(doc, token.linea, token.columna);
                             int length = token.valor.toString().length();
@@ -190,53 +247,75 @@ public class Main {
                             System.err.println("Error highlighting token: " + e.getMessage());
                         }
                         
-                        // Collect errors
+                        // DETECCIÓN DE ERRORES LÉXICOS
+                        // Recolecta tokens de error identificados por el lexer
                         if (symbol.sym == sym.ERROR) {
-                            errors.append(String.format("Error at line %d, column %d: %s%n", 
+                            errors.append(String.format("❌ Error léxico en línea %d, columna %d: %s%n", 
                                 token.linea, token.columna, token.valor));
                         }
                     }
                 }
                 
+                // Muestra los resultados del análisis léxico
                 tokenArea.setText(tokenInfo.toString());
                 errorArea.setText(errors.toString());
+                System.out.println("=== ANÁLISIS LÉXICO COMPLETADO ===");
+                
             } catch (Exception e) {
-                errorArea.setText("Lexical analysis error: " + e.getMessage());
+                errorArea.setText("Error crítico en análisis léxico: " + e.getMessage());
                 e.printStackTrace();
                 return;
             }
-            
-            // STEP 2: Parsing
+              // ===================================================================
+            // FASE 2: ANÁLISIS SINTÁCTICO (SYNTAX ANALYSIS / PARSING)
+            // ===================================================================
+            //
+            // OBJETIVO: Verificar que la secuencia de tokens siga la gramática del lenguaje
+            //
+            // PROCESO:
+            // 1. Toma los tokens del análisis léxico como entrada
+            // 2. Aplica las reglas de la gramática definidas en parser.cup
+            // 3. Construye un árbol sintáctico abstracto (AST) implícito
+            // 4. Detecta errores sintácticos (tokens inesperados, estructura inválida)
+            //
+            // ENTRADA: Secuencia de tokens del análisis léxico
+            // SALIDA: Confirmación de estructura sintáctica válida o errores sintácticos
+            // ===================================================================
             try {
-                // Create separate streams for stdout and stderr
+                System.out.println("=== INICIANDO ANÁLISIS SINTÁCTICO ===");
+                
+                // Captura de salida para mostrar el proceso del parser
                 ByteArrayOutputStream parserStdOut = new ByteArrayOutputStream();
                 ByteArrayOutputStream parserStdErr = new ByteArrayOutputStream();
                 
-                // Redirect output streams
+                // Redirección temporal de streams para capturar salida del parser
                 System.setOut(new PrintStream(parserStdOut));
                 System.setErr(new PrintStream(parserStdErr));
                 
-                // Create a new lexer and parser
-                System.out.println("===== INICIANDO ANÁLISIS SINTÁCTICO =====");
+                // CREACIÓN DEL ANALIZADOR SINTÁCTICO
+                // El parser es generado por Cup a partir de parser.cup
                 PythonLexer lexer = new PythonLexer(new StringReader(input));
-                LexerAdapter lexerAdapter = new LexerAdapter(lexer);
+                LexerAdapter lexerAdapter = new LexerAdapter(lexer); // Adaptador para Cup
                 Parser parser = new Parser(lexerAdapter);
                 
                 try {
-                    // Parse the input
-                    parser.parse();
-                    System.out.println("===== ANÁLISIS SINTÁCTICO COMPLETADO =====");
+                    // PROCESO DE PARSING
+                    // Aplica las reglas gramaticales y ejecuta acciones semánticas
+                    System.out.println("Aplicando reglas gramaticales...");
+                    parser.parse(); // Aquí ocurre el análisis sintáctico principal
+                    System.out.println("=== ANÁLISIS SINTÁCTICO COMPLETADO SIN ERRORES ===");
                 } catch (Exception e) {
-                    System.err.println("Parsing error: " + e.getMessage());
-                    System.err.println("===== ERROR EN ANÁLISIS SINTÁCTICO =====");
+                    // MANEJO DE ERRORES SINTÁCTICOS
+                    System.err.println("❌ Error sintáctico detectado: " + e.getMessage());
+                    System.err.println("=== ANÁLISIS SINTÁCTICO COMPLETADO CON ERRORES ===");
                     e.printStackTrace(System.err);
                 }
                 
-                // Get the parser output
+                // Obtención y presentación de resultados
                 String parserOutput = parserStdOut.toString();
                 String parserErrors = parserStdErr.toString();
                 
-                // Display output and errors
+                // Muestra la salida del análisis sintáctico y semántico
                 if (!parserErrors.isEmpty()) {
                     parserOutputArea.setText(parserErrors + "\n\n" + parserOutput);
                 } else {
@@ -244,10 +323,10 @@ public class Main {
                 }
                 
             } catch (Exception e) {
-                parserOutputArea.setText("Error crítico en la configuración del parser: " + e.getMessage());
+                parserOutputArea.setText("Error crítico en configuración del parser: " + e.getMessage());
                 e.printStackTrace();
             } finally {
-                // Restore original output streams
+                // Restauración de streams originales
                 System.setOut(originalOut);
                 System.setErr(originalErr);
             }

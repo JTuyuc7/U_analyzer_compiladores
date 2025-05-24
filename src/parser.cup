@@ -1,13 +1,77 @@
+/*
+ * ===============================================================================
+ * ANALIZADOR SINTÁCTICO Y SEMÁNTICO PARA PYTHON - FASES 2 Y 3 DEL COMPILADOR
+ * ===============================================================================
+ * 
+ * ANÁLISIS SINTÁCTICO (Syntax Analysis - Fase 2):
+ * 
+ * Esta es la SEGUNDA FASE del compilador. Su función principal es verificar
+ * que la secuencia de tokens siga las reglas gramaticales del lenguaje.
+ * 
+ * RESPONSABILIDADES DEL ANALIZADOR SINTÁCTICO:
+ * 1. Verificar que los tokens estén en el orden correcto según la gramática
+ * 2. Detectar errores sintácticos (estructura inválida)
+ * 3. Construir un árbol sintáctico abstracto (AST) implícito
+ * 4. Proporcionar recuperación de errores
+ * 
+ * ANÁLISIS SEMÁNTICO (Semantic Analysis - Fase 3):
+ * 
+ * Esta es la TERCERA FASE del compilador. Se ejecuta junto con el análisis
+ * sintáctico mediante "acciones semánticas" integradas en las reglas gramaticales.
+ * 
+ * RESPONSABILIDADES DEL ANALIZADOR SEMÁNTICO:
+ * 1. Verificar compatibilidad de tipos en operaciones
+ * 2. Manejar la tabla de símbolos (variables y sus tipos)
+ * 3. Detectar errores semánticos (variables no declaradas, tipos incompatibles)
+ * 4. Realizar conversiones de tipos implícitas cuando sea apropiado
+ * 
+ * ENTRADA: Tokens del analizador léxico
+ * SALIDA: Confirmación de corrección sintáctica y semántica, o errores detectados
+ * 
+ * HERRAMIENTA: CUP - Constructor de Analizadores para Java
+ * ===============================================================================
+ */
+
 import java.util.Map;
 import java.util.HashMap;
 import java_cup.runtime.Symbol;
 import java_cup.runtime.Symbol;
+/*
+ * CÓDIGO DEL PARSER - CONFIGURACIÓN Y MANEJO DE ERRORES
+ * 
+ * Este bloque contiene código Java que se integra en la clase del parser generado.
+ * Incluye la tabla de símbolos y métodos para manejo de errores sintácticos.
+ */
 parser code {:
+    /*
+     * TABLA DE SÍMBOLOS - COMPONENTE DEL ANÁLISIS SEMÁNTICO
+     * 
+     * La tabla de símbolos almacena información sobre las variables declaradas:
+     * - Clave: nombre de la variable
+     * - Valor: tipo de la variable (int, float, string, etc.)
+     * 
+     * Esta tabla es fundamental para el análisis semántico, ya que permite:
+     * 1. Verificar si una variable ha sido declarada antes de usarla
+     * 2. Verificar compatibilidad de tipos en asignaciones y operaciones
+     */
     public static Map<String, String> tablaSimbolos = new HashMap<>();
+    
+    /*
+     * BANDERA DE ERRORES SEMÁNTICOS
+     * 
+     * Indica si se han detectado errores de tipo durante el análisis.
+     * Se utiliza para generar un reporte final del estado del análisis.
+     */
     public static boolean tieneErroresTipo = false;
 
+    /*
+     * MANEJO DE ERRORES SINTÁCTICOS
+     * 
+     * Este método se llama automáticamente cuando el parser encuentra
+     * un token inesperado que no coincide con ninguna regla gramatical.
+     */
     public void syntax_error(Symbol cur_token) {
-        System.err.println("Error de sintaxis en línea: " +
+        System.err.println("❌ Error de sintaxis en línea: " +
             (cur_token.value instanceof Token ? ((Token)cur_token.value).linea : "desconocida") +
             ", columna: " +
             (cur_token.value instanceof Token ? ((Token)cur_token.value).columna : "desconocida") +
@@ -15,77 +79,195 @@ parser code {:
             (cur_token.value instanceof Token ? ((Token)cur_token.value).valor : cur_token.value));
     }
 
+    /*
+     * REPORTE DE ERRORES GENERAL
+     * 
+     * Método para reportar otros tipos de errores durante el análisis.
+     */
     public void report_error(String message, Object info) {
-        System.err.println("Error: " + message);
+        System.err.println("❌ Error: " + message);
     }
 
+    /*
+     * REINICIO DEL ESTADO DEL PARSER
+     * 
+     * Limpia la tabla de símbolos y reinicia las banderas de error
+     * para preparar un nuevo análisis.
+     */
     public static void reset() {
         tablaSimbolos.clear();
         tieneErroresTipo = false;
     }
 :};
 
-init with {: Parser.reset(); :};
-scan with {: return getScanner().next_token(); :};
+/*
+ * CONFIGURACIÓN DE INICIALIZACIÓN Y ESCANEO
+ */
+init with {: Parser.reset(); :};           // Reinicia el estado antes de cada análisis
+scan with {: return getScanner().next_token(); :}; // Obtiene el siguiente token del lexer
 
-// ---------------------------------------------
-// TERMINALES: definir todos los tokens lexicos
-// ---------------------------------------------
+/*
+ * ===============================================================================
+ * DEFINICIÓN DE SÍMBOLOS TERMINALES
+ * ===============================================================================
+ * 
+ * Los símbolos terminales son los tokens que provienen del analizador léxico.
+ * Cada terminal corresponde a un tipo de token específico que puede aparecer
+ * en el código fuente.
+ * 
+ * CATEGORÍAS DE TERMINALES:
+ * 1. Identificadores y literales básicos
+ * 2. Palabras clave de control de flujo y estructura
+ * 3. Literales especiales (booleanos, None)
+ * 4. Operadores (aritméticos, lógicos, relacionales)
+ * 5. Delimitadores y puntuación
+ * 6. Elementos de control (comentarios, errores)
+ * ===============================================================================
+ */
 terminal Token
-    // Identificadores y literales
-    ID,
-    NUM, FLOAT, STRING,
-    // Estructura
+    // ----------------------------
+    // IDENTIFICADORES Y LITERALES BÁSICOS
+    // ----------------------------
+    ID,                    // Identificadores (nombres de variables, funciones)
+    NUM, FLOAT, STRING,    // Literales numéricos y de cadena
+    
+    // ----------------------------
+    // PALABRAS CLAVE DE ESTRUCTURA Y CONTROL
+    // ----------------------------
     DEF, RETURN, IF, ELIF, ELSE, FOR, WHILE, BREAK, CONTINUE,
     PASS, IMPORT, FROM, AS, CLASS, TRY, EXCEPT, FINALLY,
     WITH, LAMBDA, GLOBAL, NONLOCAL, ASSERT, YIELD,
     ASYNC, AWAIT,
-    // Literales especiales
-    TRUE, FALSE, NONE,
-    // Generic keyword token (from lexer)
-    KEYWORD,
-    // Operadores
-    PLUS, MINUS, MULT, DIV, ASSIGN,
-    EQ, NEQ, LT, GT, LE, GE,
-    AND, OR, NOT,
-    POW, FLOORDIV, LSH, RSH, MOD, BITAND, BITOR, BITXOR, BITNOT,
-    // Delimitadores
-    LPAREN, RPAREN, LBRACK, RBRACK, LBRACE, RBRACE,
-    COLON, COMMA, DOT, SEMI, AT, ARROW,
-    // Control de indentacion
-    NEWLINE, INDENT, DEDENT,
-    // Comentarios y errores
-    COMMENT, ERROR;
+    
+    // ----------------------------
+    // LITERALES ESPECIALES
+    // ----------------------------
+    TRUE, FALSE, NONE,     // Valores booleanos y nulo
+    
+    // ----------------------------
+    // TOKEN GENÉRICO DE PALABRA CLAVE
+    // ----------------------------
+    KEYWORD,               // Token genérico para palabras reservadas del lexer
+    
+    // ----------------------------
+    // OPERADORES ARITMÉTICOS Y DE ASIGNACIÓN
+    // ----------------------------
+    PLUS, MINUS, MULT, DIV, ASSIGN,           // +, -, *, /, =
+    POW, FLOORDIV, MOD,                       // **, //, %
+    
+    // ----------------------------
+    // OPERADORES RELACIONALES
+    // ----------------------------
+    EQ, NEQ, LT, GT, LE, GE,                 // ==, !=, <, >, <=, >=
+    
+    // ----------------------------
+    // OPERADORES LÓGICOS
+    // ----------------------------
+    AND, OR, NOT,                             // and, or, not
+    
+    // ----------------------------
+    // OPERADORES BIT A BIT
+    // ----------------------------
+    LSH, RSH, BITAND, BITOR, BITXOR, BITNOT, // <<, >>, &, |, ^, ~    // ----------------------------
+    // DELIMITADORES Y PUNTUACIÓN
+    // ----------------------------
+    LPAREN, RPAREN, LBRACK, RBRACK, LBRACE, RBRACE,    // (), [], {}
+    COLON, COMMA, DOT, SEMI, AT, ARROW,                 // :, ,, ., ;, @, ->
+    
+    // ----------------------------
+    // CONTROL DE INDENTACIÓN (para futuras expansiones)
+    // ----------------------------
+    NEWLINE, INDENT, DEDENT,        // Manejo de estructura por indentación
+    
+    // ----------------------------
+    // ELEMENTOS ESPECIALES
+    // ----------------------------
+    COMMENT, ERROR;                 // Comentarios y tokens de error
 
-// ---------------------------------------------
-// NO TERMINALES
-// ---------------------------------------------
-non terminal prog, stmt_list, stmt;
-non terminal Nodo expr;
+/*
+ * ===============================================================================
+ * DEFINICIÓN DE SÍMBOLOS NO TERMINALES
+ * ===============================================================================
+ * 
+ * Los símbolos no terminales representan las construcciones sintácticas
+ * del lenguaje. Estos se definen mediante reglas gramaticales y pueden
+ * generar secuencias de terminales y otros no terminales.
+ * 
+ * SÍMBOLOS NO TERMINALES EN ESTA GRAMÁTICA:
+ * - prog: programa completo (símbolo inicial)
+ * - stmt_list: lista de sentencias
+ * - stmt: sentencia individual
+ * - expr: expresión (con tipo semántico Nodo)
+ * ===============================================================================
+ */
+non terminal prog, stmt_list, stmt;    // Elementos sintácticos básicos
+non terminal Nodo expr;                // Expresiones con información de tipo (análisis semántico)
 
-// ---------------------------------------------
-// PRECEDENCIAS (oprelacionales/modo python)
-// ---------------------------------------------
-precedence left OR;
+/*
+ * ===============================================================================
+ * DEFINICIÓN DE PRECEDENCIAS
+ * ===============================================================================
+ * 
+ * Las precedencias determinan el orden en que se evalúan los operadores
+ * cuando hay ambigüedad en la gramática. Se definen de menor a mayor precedencia.
+ * 
+ * ORDEN DE PRECEDENCIA (de menor a mayor):
+ * 1. OR (or)          - Operador lógico OR
+ * 2. AND (and)        - Operador lógico AND  
+ * 3. NOT (not)        - Operador lógico NOT
+ * 4. Relacionales     - ==, !=, <, >, <=, >=
+ * 5. Aditivos         - +, -
+ * 6. Multiplicativos  - *, /, //, %
+ * 7. Exponenciación   - ** (mayor precedencia)
+ * 
+ * Esta jerarquía sigue las convenciones estándar de Python.
+ * ===============================================================================
+ */
+precedence left OR;                    // Precedencia más baja
 precedence left AND;
 precedence left NOT;
 precedence left EQ, NEQ;
 precedence left LT, GT, LE, GE;
 precedence left PLUS, MINUS;
 precedence left MULT, DIV, FLOORDIV, MOD;
-precedence left POW;
+precedence left POW;                   // Precedencia más alta
 
-// ---------------------------------------------
-// INICIO
-// ---------------------------------------------
+/*
+ * ===============================================================================
+ * SÍMBOLO INICIAL DE LA GRAMÁTICA
+ * ===============================================================================
+ */
 start with prog;
 
-// ---------------------------------------------
-// PRODUCCIONES
-// ---------------------------------------------
+/*
+ * ===============================================================================
+ * REGLAS GRAMATICALES CON ACCIONES SEMÁNTICAS
+ * ===============================================================================
+ * 
+ * Cada regla gramatical define una construcción sintáctica válida del lenguaje
+ * y puede incluir "acciones semánticas" (código entre {:  :}) que se ejecutan
+ * cuando se reconoce esa construcción.
+ * 
+ * ESTRUCTURA DE UNA REGLA:
+ * no_terminal ::= secuencia_de_símbolos {: acción_semántica :}
+ * 
+ * Las acciones semánticas implementan el ANÁLISIS SEMÁNTICO (Fase 3):
+ * - Verificación de tipos
+ * - Manejo de tabla de símbolos
+ * - Detección de errores semánticos
+ * - Generación de código intermedio (si fuera necesario)
+ * ===============================================================================
+ */
 
+/*
+ * REGLA PARA PROGRAMA COMPLETO
+ * 
+ * Un programa consiste en una lista de sentencias.
+ * La acción semántica genera un reporte final del análisis.
+ */
 prog ::= stmt_list
        {:
+          // REPORTE FINAL DEL ANÁLISIS SEMÁNTICO
           if (Parser.tieneErroresTipo) {
               System.out.println("❌ Análisis completado con errores de tipo.");
           } else {
@@ -93,21 +275,46 @@ prog ::= stmt_list
           }
        :};
 
+/*
+ * REGLAS PARA LISTA DE SENTENCIAS
+ * 
+ * Una lista de sentencias puede ser:
+ * 1. Una lista existente seguida de una nueva sentencia
+ * 2. Una sola sentencia
+ */
 stmt_list ::= stmt_list NEWLINE stmt
             {:
-                // Lista de sentencias que continúa
+                // Lista de sentencias que continúa (análisis sintáctico)
+                // No requiere acción semántica específica
             :}
             | stmt
             {:
-                // Una sola sentencia
+                // Una sola sentencia (análisis sintáctico)
+                // No requiere acción semántica específica
             :};
 
+/*
+ * REGLAS PARA SENTENCIAS
+ * 
+ * Una sentencia puede ser:
+ * 1. Una asignación (variable = expresión)
+ * 2. Una sentencia con error sintáctico
+ */
 stmt ::= ID:id ASSIGN expr:val
        {:
+          // ===================================================================
+          // ANÁLISIS SEMÁNTICO: PROCESAMIENTO DE ASIGNACIONES
+          // ===================================================================
+          
+          // 1. ACTUALIZACIÓN DE LA TABLA DE SÍMBOLOS
+          // Registra la variable y su tipo en la tabla de símbolos
           Parser.tablaSimbolos.put(id.valor.toString(), val.tipo);
-          System.out.println("Asignación: " + id.valor + " = " + val.valor + " (tipo: " + val.tipo + ")");
+          
+          // 2. REPORTE DE LA ASIGNACIÓN
+          System.out.println("✅ Asignación: " + id.valor + " = " + val.valor + " (tipo: " + val.tipo + ")");
 
-          // Si hay un error en la expresión, reportarlo
+          // 3. VERIFICACIÓN DE ERRORES SEMÁNTICOS
+          // Si la expresión del lado derecho tiene errores, propagar el error
           if (val.tipo.equals("error")) {
               System.err.println("❌ Error de tipo en la asignación a '" + id.valor + "'");
               Parser.tieneErroresTipo = true;
@@ -115,43 +322,70 @@ stmt ::= ID:id ASSIGN expr:val
        :}
        | error
        {:
+          // MANEJO DE ERRORES SINTÁCTICOS EN SENTENCIAS
           System.err.println("❌ Error de sintaxis: Sentencia inválida");
        :};
 
+/*
+ * REGLAS PARA EXPRESIONES CON ANÁLISIS SEMÁNTICO
+ * 
+ * Las expresiones son el núcleo del análisis semántico, donde se verifican
+ * los tipos y se detectan incompatibilidades.
+ */
+
+/*
+ * EXPRESIÓN DE SUMA
+ * 
+ * Implementa verificación de tipos para la operación de suma.
+ */
 expr ::= expr:izq PLUS expr:der
       {:
+         // ===================================================================
+         // ANÁLISIS SEMÁNTICO: OPERACIÓN DE SUMA
+         // ===================================================================
+         
 //         System.out.println("DEBUG: Operación SUMA: " + izq.valor + " + " + der.valor);
 //         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
 
-         // Verifica si alguno de los operandos ya tiene un error
+         // 1. VERIFICACIÓN DE ERRORES PREVIOS
+         // Si algún operando ya tiene un error, propagar el error
          if (izq.tipo.equals("error") || der.tipo.equals("error")) {
              RESULT = new Nodo("error", izq.valor + "+" + der.valor);
              System.err.println("❌ Error: no se puede realizar la suma debido a operandos inválidos");
              Parser.tieneErroresTipo = true;
          }
-         // Verifica si los operandos son numéricos
+         // 2. VERIFICACIÓN DE TIPO DEL OPERANDO IZQUIERDO
+         // Si el tipo no es numérico, generar error
          else if (!izq.tipo.equals("int") && !izq.tipo.equals("float")) {
              System.err.println("❌ Error: operando izquierdo de suma debe ser numérico, es " + izq.tipo);
              RESULT = new Nodo("error", izq.valor + "+" + der.valor);
              Parser.tieneErroresTipo = true;
          }
+         // 3. VERIFICACIÓN DE TIPO DEL OPERANDO DERECHO
+         // Si el tipo no es numérico, generar error
          else if (!der.tipo.equals("int") && !der.tipo.equals("float")) {
              System.err.println("❌ Error: operando derecho de suma debe ser numérico, es " + der.tipo);
              RESULT = new Nodo("error", izq.valor + "+" + der.valor);
              Parser.tieneErroresTipo = true;
          }
-         // Si ambos son numéricos pero de diferente tipo, aplicar conversión implícita
+         // 4. CONVERSIÓN IMPLÍCITA DE TIPOS
+         // Si los tipos son diferentes pero compatibles, promover a float
          else if (!izq.tipo.equals(der.tipo)) {
              System.out.println("⚠️ Advertencia: conversión implícita entre " + izq.tipo + " y " + der.tipo);
              RESULT = new Nodo("float", izq.valor + "+" + der.valor);
          }
-         // Si ambos son del mismo tipo numérico, mantener ese tipo
+         // 5. TIPOS COMPATIBLES
+         // Si ambos operandos son del mismo tipo numérico
          else {
              RESULT = new Nodo(izq.tipo, izq.valor + "+" + der.valor);
          }
       :}
       | expr:izq MINUS expr:der
       {:
+         // ===================================================================
+         // ANÁLISIS SEMÁNTICO: OPERACIÓN DE RESTA
+         // ===================================================================
+         
 //         System.out.println("DEBUG: Operación RESTA: " + izq.valor + " - " + der.valor);
 //         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
 
@@ -184,6 +418,10 @@ expr ::= expr:izq PLUS expr:der
       :}
       | expr:izq MULT expr:der
       {:
+         // ===================================================================
+         // ANÁLISIS SEMÁNTICO: OPERACIÓN DE MULTIPLICACIÓN
+         // ===================================================================
+         
 //         System.out.println("DEBUG: Operación MULTIPLICACIÓN: " + izq.valor + " * " + der.valor);
 //         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
 
@@ -216,6 +454,10 @@ expr ::= expr:izq PLUS expr:der
       :}
       | expr:izq DIV expr:der
       {:
+         // ===================================================================
+         // ANÁLISIS SEMÁNTICO: OPERACIÓN DE DIVISIÓN
+         // ===================================================================
+         
 //         System.out.println("DEBUG: Operación DIVISIÓN: " + izq.valor + " / " + der.valor);
 //         System.out.println("DEBUG: Tipos: " + izq.tipo + " y " + der.tipo);
 
@@ -249,7 +491,7 @@ expr ::= expr:izq PLUS expr:der
       | LPAREN expr:e RPAREN
       {:
 //          System.out.println("DEBUG: Expresión entre paréntesis: (" + e.valor + ")");
-          RESULT = e;
+          RESULT = e; // Propaga el tipo sin modificación
       :}
       | NUM:num
       {:
@@ -286,3 +528,34 @@ expr ::= expr:izq PLUS expr:der
           Parser.tieneErroresTipo = true;
           RESULT = new Nodo("error", "expr_error");
       :};
+
+/*
+ * ===============================================================================
+ * RESUMEN DE LAS FASES DEL COMPILADOR IMPLEMENTADAS
+ * ===============================================================================
+ * 
+ * FASE 1 - ANÁLISIS LÉXICO:
+ * ├── Archivo: PythonLexer.flex
+ * ├── Clase: Token.java
+ * ├── Función: Convierte código fuente en tokens
+ * └── Salida: Secuencia de tokens clasificados y coloreados
+ * 
+ * FASE 2 - ANÁLISIS SINTÁCTICO:
+ * ├── Archivo: parser.cup (reglas gramaticales)
+ * ├── Clase: LexerAdapter.java (interfaz lexer-parser)
+ * ├── Función: Verifica estructura sintáctica del código
+ * └── Salida: Confirmación de sintaxis válida o errores sintácticos
+ * 
+ * FASE 3 - ANÁLISIS SEMÁNTICO:
+ * ├── Archivo: parser.cup (acciones semánticas)
+ * ├── Clase: Nodo.java (información de tipos)
+ * ├── Función: Verifica consistencia de tipos y maneja símbolos
+ * └── Salida: Confirmación semántica o errores de tipos
+ * 
+ * COORDINACIÓN:
+ * ├── Archivo: Main.java
+ * ├── Función: Interfaz gráfica y coordinación de fases
+ * └── Salida: Visualización integrada de todas las fases
+ * 
+ * ===============================================================================
+ */
